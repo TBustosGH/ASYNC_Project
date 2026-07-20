@@ -1,26 +1,32 @@
-import { startStandaloneServer } from "@apollo/server/standalone";
+// GraphQL 
 import { ApolloServer } from "@apollo/server";
-
+import { startStandaloneServer } from "@apollo/server/standalone";
 import { typeDefs } from "./graphql/typeDefs.js";
 import { resolvers } from "./graphql/resolvers.js";
+// Utils
+import { APP_PORT } from "./utils/config.js";
+import { connectToDB } from "./database/server.js";
 
-import Server from "./database/server.js";
+if (!APP_PORT) {
+    throw new Error('No application port defined');
+}
 
 const server = new ApolloServer({
     typeDefs,
     resolvers
 });
 
+
 interface props {
     url: string;
 };
 
 startStandaloneServer(server, {
-    listen: { port: 4000 }
+    listen: { port: APP_PORT }
 }).then(({ url }: props) => {
     console.log(`Server ready at ${url}`);
     try {
-        Server();
+        connectToDB();
     } catch (error) {
         let errorMessage = 'Something went wrong: ';
         if (error instanceof Error) {
