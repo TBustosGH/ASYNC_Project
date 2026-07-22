@@ -14,23 +14,23 @@ module.exports = {
                     autoIncrement: true
                 },
                 username: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.STRING(50),
                     allowNull: false
                 },
                 email: {
-                    type: DataTypes.STRING,
+                    type: DataTypes.STRING(100),
                     allowNull: false,
                     unique: true
                 },
                 name: {
-                    type: DataTypes.TEXT
+                    type: DataTypes.STRING(100)
                 },
                 password_hash: {
                     type: DataTypes.TEXT,
                     allowNull: false
                 },
                 description: {
-                    type: DataTypes.STRING
+                    type: DataTypes.STRING(250)
                 },
                 avatar_url: {
                     type: DataTypes.TEXT
@@ -45,6 +45,7 @@ module.exports = {
                 },
                 deleted_at: {
                     type: DataTypes.DATE,
+                    allowNull: true,
                     defaultValue: null 
                 }
             });
@@ -61,7 +62,7 @@ module.exports = {
                     references: { model: 'users', key: 'id' }
                 },
                 content: {
-                    type: DataTypes.TEXT,
+                    type: DataTypes.STRING,
                     allowNull: false
                 },
                 created_at: {
@@ -71,6 +72,7 @@ module.exports = {
                 },
                 deleted_at: {
                     type: DataTypes.DATE,
+                    allowNull: true,
                     defaultValue: null
                 }
             });
@@ -92,7 +94,7 @@ module.exports = {
                     references: { model: 'users', key: 'id' }
                 },
                 content: {
-                    type: DataTypes.TEXT,
+                    type: DataTypes.STRING(250),
                     allowNull: false
                 },
                 created_at: {
@@ -102,6 +104,7 @@ module.exports = {
                 },
                 deleted_at: {
                     type: DataTypes.DATE,
+                    allowNull: true,
                     defaultValue: null
                 }
             });

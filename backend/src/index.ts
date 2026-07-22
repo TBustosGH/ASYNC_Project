@@ -5,7 +5,7 @@ import { typeDefs } from "./graphql/typeDefs.js";
 import { resolvers } from "./graphql/resolvers.js";
 // Utils
 import { APP_PORT } from "./utils/config.js";
-import { connectToDB } from "./database/server.js";
+import { connectToDB } from "./utils/db.js";
 
 if (!APP_PORT) {
     throw new Error('No application port defined');

@@ -1,2 +1,2 @@
 export declare const runMigrations: () => Promise<void>;
-//# sourceMappingURL=migrator.d.ts.map
+//# sourceMappingURL=db.d.ts.map

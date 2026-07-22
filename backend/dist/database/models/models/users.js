@@ -1,25 +1,8 @@
-import {
-    Model,
-    DataTypes,
-    type InferAttributes,
-    type InferCreationAttributes,
-    type CreationOptional
-} from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import sequelize from "../../server.js";
-
-class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-    declare id: CreationOptional<number>;
-    declare username: string;
-    declare email: string;
-    declare name: string | null;
-    declare passwordHash: string;
-    declare description: string | null;
-    declare avatarUrl: string | null;
-    declare bannerUrl: string | null;
-    declare createdAt: CreationOptional<string>;
-    declare deletedAt: string | null;
-};
-
+class User extends Model {
+}
+;
 User.init({
     id: {
         type: DataTypes.INTEGER,
@@ -64,8 +47,8 @@ User.init({
 }, {
     sequelize,
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     modelName: "user"
 });
-
 export default User;
+//# sourceMappingURL=users.js.map

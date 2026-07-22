@@ -1,28 +1,15 @@
-import {
-    Model,
-    DataTypes,
-    type InferAttributes,
-    type InferCreationAttributes,
-    type CreationOptional
-} from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import sequelize from "../../server.js";
-
-class Comment extends Model<InferAttributes<Comment>, InferCreationAttributes<Comment>> {
-    declare id: CreationOptional<number>;
-    declare postId: number;
-    declare userId: number;
-    declare content: string;
-    declare createdAt: CreationOptional<string>;
-    declare deletedAt: string | null;
-};
-
+class Comment extends Model {
+}
+;
 Comment.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    postId: {
+    parentId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: "posts", key: "id" }
@@ -49,8 +36,8 @@ Comment.init({
 }, {
     sequelize,
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     modelName: "comment"
 });
-
 export default Comment;
+//# sourceMappingURL=comments.js.map

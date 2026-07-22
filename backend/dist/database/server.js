@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize";
 import { DB_NAME, DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT } from "../utils/config.js";
+import { runMigrations } from "./migrator.js";
 if (!(DB_NAME && DB_USERNAME && DB_PASSWORD && DB_HOST && DB_PORT)) {
     throw new Error('Insuficient or invalid database connection informarion!');
 }
@@ -10,14 +11,27 @@ const sequelize = new Sequelize({
     password: DB_PASSWORD,
     host: DB_HOST,
     port: DB_PORT,
-    dialect: 'postgres',
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false
-        }
-    }
+    dialect: 'postgres'
 });
+import models from "./models/index.js";
+const syncModels = async () => {
+    await models.User.sync();
+    await models.Post.sync();
+    await models.Comment.sync();
+};
+export const connectToDB = async () => {
+    try {
+        await sequelize.authenticate();
+        await syncModels();
+        await runMigrations();
+        console.log('connected to the database');
+    }
+    catch (error) {
+        console.log('failed to connect to the database');
+        console.log(error);
+        return process.exit(1);
+    }
+};
 export const testDbConnection = async () => {
     await sequelize.authenticate();
     console.log(`Connection with ${DB_NAME} successfully established.`);

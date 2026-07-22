@@ -1,11 +1,12 @@
 import sequelize from "./server.js";
 import { Umzug, SequelizeStorage } from "umzug";
+
 export const runMigrations = async () => {
     const migrator = new Umzug({
         migrations: {
             glob: './migrations/*.{js,ts}'
         },
-        storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
+        storage: new SequelizeStorage({ sequelize, tableName: 'migrations'}),
         context: sequelize.getQueryInterface(),
         logger: console
     });
@@ -14,4 +15,3 @@ export const runMigrations = async () => {
         files: migrations.map((mig) => mig.name)
     });
 };
-//# sourceMappingURL=migrator.js.map

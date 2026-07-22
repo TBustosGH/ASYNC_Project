@@ -1,20 +1,8 @@
-import {
-    Model,
-    DataTypes,
-    type InferAttributes,
-    type InferCreationAttributes,
-    type CreationOptional
-} from "sequelize";
+import { Model, DataTypes } from "sequelize";
 import sequelize from "../../server.js";
-
-class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>> {
-    declare id: CreationOptional<number>;
-    declare userId: string;
-    declare content: string;
-    declare createdAt: CreationOptional<string>;
-    declare deletedAt: string | null;
-};
-
+class Post extends Model {
+}
+;
 Post.init({
     id: {
         type: DataTypes.INTEGER,
@@ -43,8 +31,8 @@ Post.init({
 }, {
     sequelize,
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     modelName: "post"
 });
-
 export default Post;
+//# sourceMappingURL=posts.js.map
