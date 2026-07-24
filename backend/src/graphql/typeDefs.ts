@@ -1,36 +1,11 @@
-export const typeDefs = `
-    type User {
-        id: ID!
-        username: String!
-        email: String!
-        name: String
-        description: String
-        avatar_url: String
-        banner_url: String
-        created_at: String!
-    }
+import { loadFilesSync } from "@graphql-tools/load-files";
+import { mergeTypeDefs } from "@graphql-tools/merge";
+import path from "node:path";
 
-    type Post {
-        id: ID!
-        user: User!
-        content: String!
-        comments: [Comment!]!
-        created_at: String!
-    }
 
-    type Comment {
-        id: ID!
-        post: Post!
-        user: User!
-        content: String!
-        created_at: String!
-    }
+const __dirname: string = import.meta.dirname;  // Get the actual dirname
+const graphQlDir: string = "./**/*.graphql";    // A string to specify where to search for .graphql files
 
-    type Query {
-        hi: String
-        getAllUsers: [User!]!
-        getUserByPk(id: ID!): User!
-        getAllPosts: [Post!]!
-        getPost(id: ID!): Post!
-    }
-`;
+const typesArray = loadFilesSync(path.join(__dirname, graphQlDir)); // Get all .graphql files
+
+export const typeDefs = mergeTypeDefs(typesArray);  // Merge all .graphql files

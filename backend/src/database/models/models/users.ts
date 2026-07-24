@@ -9,15 +9,15 @@ import sequelize from "../../server.js";
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare id: CreationOptional<number>;
-    declare username: string;
-    declare email: string;
-    declare name: string | null;
-    declare passwordHash: string;
-    declare description: string | null;
-    declare avatarUrl: string | null;
-    declare bannerUrl: string | null;
-    declare createdAt: CreationOptional<string>;
-    declare deletedAt: string | null;
+    declare username: String;
+    declare email: String;
+    declare name: String | null;
+    declare passwordHash: String;
+    declare description: String | null;
+    declare avatarUrl: String | null;
+    declare bannerUrl: String | null;
+    declare createdAt: CreationOptional<String>;
+    declare deletedAt: String | null;
 };
 
 User.init({

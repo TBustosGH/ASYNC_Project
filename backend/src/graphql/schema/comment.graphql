@@ -1,0 +1,11 @@
+type Comment {
+    id: ID!
+    post: Post!
+    user: User!
+    content: String!
+    created_at: String!
+}
+
+type Mutation {
+    createComment(parent: ID!, author: ID!, content: String!): Comment
+}

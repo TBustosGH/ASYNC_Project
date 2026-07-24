@@ -8,11 +8,11 @@ import {
 import sequelize from "../../server.js";
 
 class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>> {
-    declare id: CreationOptional<number>;
-    declare userId: string;
-    declare content: string;
-    declare createdAt: CreationOptional<string>;
-    declare deletedAt: string | null;
+    declare id: CreationOptional<Number>;
+    declare userId: Number;
+    declare content: String;
+    declare createdAt: CreationOptional<String>;
+    declare deletedAt: String | null;
 };
 
 Post.init({
