@@ -1,6 +1,6 @@
 import sequelize from "../database/server.js";
 import models from "../database/models/index.js";
-import { runMigrations } from "../database/migrator.js";
+//import { runMigrations } from "../database/migrator.js";
 import { DB_NAME } from "./config.js";
 
 const syncModels = async () => {

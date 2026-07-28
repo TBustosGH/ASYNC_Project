@@ -1,22 +1,19 @@
+import { Sequelize } from "sequelize";
 import models from "../database/models/index.js";
 import type { newPost } from "../types.js";
-
+import userServices from "./userServices.js";
 
 const getAllPosts = async (limit: number = 12, offset: number = 0) => {
-    const { count, rows } = await models.Post.findAndCountAll({
+    const rows = await models.Post.findAll({
         where: {
             deletedAt: null
         },
-        attributes: ["id", "content", "created_at"],
+        attributes: ["id", "content", "createdAt"],
         include: [{ model: models.User }],
         order: [["createdAt", "DESC"]],
-        distinct: true,
         limit: limit,
         offset: offset
     });
-
-    console.log("count after getting posts: ", count);
-    console.log("rows after getting posts: ", rows);
 
     return rows;
 };
@@ -31,27 +28,58 @@ const getPost = async (id: number) => {
         include: [{ model: models.User }]
     });
 
-    console.log("foundPost: ", foundPost);
     return foundPost;
 };
 
 const createPost = async (object: newPost) => {
     if (!object) {
+        // Throw an error if no object has been passed as a parameter
         throw new Error("insuficient or invalid data while creating a new post");
     }
-    console.log(object);
+
+    const userAuthor = await userServices.getUser(Number(object.userId));   // Search for the author
+    if (!userAuthor) {
+        // If the author does not exist throw an error
+        throw new Error("the specified ID does not correspond to any existing user");
+    }
+
     const newPost = await models.Post.create({
         userId: object.userId,
         content: object.content
     });
 
-    console.log("new post: ", newPost);
-
     return newPost;
+};
+
+const deletePost = async (id: number) => {
+    const [affectedCount] = await models.Post.update(
+        { deletedAt: Sequelize.fn("NOW")},
+        {
+            where: { id: id, deletedAt: null }
+        }
+    );
+
+    return affectedCount > 0 ? "post deleted succesfully" : "post not found" ;
+};
+
+const deletePostsByUser = async (id: number) => {
+    const [affectedCount] = await models.Post.update(
+        { deletedAt: Sequelize.fn("NOW") },
+        {
+            where: {
+                userId: id,
+                deletedAt: null
+            }
+        }
+    );
+
+    return affectedCount;
 };
 
 export default {
     getAllPosts,
     getPost,
-    createPost
+    createPost,
+    deletePost,
+    deletePostsByUser
 }

@@ -1,28 +1,4 @@
 /*const typeDefs = `#graphql
-    type User {
-        id: ID!
-        username: String!
-        email: String!
-        name: String
-        password_hash: String!
-        description: String
-        avartar_url: String
-        banner_url: String
-        created_at: String!
-        updated_at: String
-        deleted_at: String
-    }
-    
-    type Post {
-        id: ID!
-        author: User!
-        title: String!
-        content: String!
-        created_at: String!
-        updated_at: String
-        deleted_at: String
-    }
-
     type PostsLike {
         user: User!
         post: Post!
@@ -35,16 +11,6 @@
         post: Post!
         saved_at: String!
         unsaved_at: String
-    }
-
-    type Comment {
-        id: ID!
-        parent: Post!
-        user: User!
-        content: String!
-        created_at: String!
-        updated_at: String
-        deleted_at: String
     }
 
     type CommentsLike {

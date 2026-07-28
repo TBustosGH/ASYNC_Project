@@ -21,6 +21,7 @@
     "@graphql-tools/merge": "^9.2.2",
     "dotenv": "^17.4.2",
     "graphql": "^16.14.2",
+    "graphql-scalars": "^1.25.0",
     "pg": "^8.22.0",
     "sequelize": "^6.37.8",
     "umzug": "^3.8.3"

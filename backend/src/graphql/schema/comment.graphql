@@ -1,9 +1,11 @@
+scalar DateTime
+
 type Comment {
     id: ID!
     post: Post!
     user: User!
     content: String!
-    created_at: String!
+    createdAt: DateTime!
 }
 
 type Mutation {

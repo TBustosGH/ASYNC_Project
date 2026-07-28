@@ -1,3 +1,5 @@
+// GraphQL
+import { DateTimeResolver } from "graphql-scalars";
 // Services
 import userServices from "../services/userServices.js";
 import postServices from "../services/postServices.js";
@@ -7,6 +9,7 @@ import type { newUser, createUserArgs, newPost, createPostArgs } from "../types.
 
 
 export const resolvers = {
+    DateTime: DateTimeResolver,
     Query: {
         getAllUsers: async () => {
             const users = await userServices.getUsers();
@@ -55,6 +58,36 @@ export const resolvers = {
                 return newPost;
             } catch (error) {
                 let errorMessage = "Something went wrong: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
+            }
+        },
+        deletePost: async (_parent: unknown, { id }: {id: string}) => {
+            try {
+                if(!id) {
+                    throw new Error("no post id given for delete post");
+                }
+                return await postServices.deletePost(Number(id));
+            } catch (error) {
+                let errorMessage = "Something went wrong while trying to delete a post: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
+            }
+        },
+        deleteUser: async (_parent: unknown, { id }: { id: string }) => {
+            try {
+                if (!id) {
+                    throw new Error("no user id given for delete user");
+                }
+                return await userServices.deleteUser(Number(id));
+            } catch (error) {
+                let errorMessage = "Something went wrong while trying to delete user: ";
                 if (error instanceof Error) {
                     errorMessage += error.message;
                 }

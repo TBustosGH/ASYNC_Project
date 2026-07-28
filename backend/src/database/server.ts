@@ -5,6 +5,12 @@ if (!(DB_NAME && DB_USERNAME && DB_PASSWORD && DB_HOST && DB_PORT)) {
     throw new Error('Insuficient or invalid database connection informarion!');
 }
 
+import fs from "fs";
+import path from "path";
+
+const currentDir = import.meta.dirname; // Get the actual dirname
+const dbCaPemDir = "../../ca.pem";  // Dir of the CA Certificate of the data base
+
 // Initialize a sequelize instance
 const sequelize = new Sequelize({
     database: DB_NAME,
@@ -12,7 +18,13 @@ const sequelize = new Sequelize({
     password: DB_PASSWORD,
     host: DB_HOST,
     port: DB_PORT,
-    dialect: 'postgres'
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: {
+            require: true,
+            ca: fs.readFileSync(path.join(currentDir, dbCaPemDir), "utf-8")
+        }
+    }
 });
 
 

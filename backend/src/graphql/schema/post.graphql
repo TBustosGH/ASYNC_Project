@@ -1,9 +1,11 @@
+scalar DateTime
+
 type Post {
     id: ID!
     user: User!
     content: String!
     comments: [Comment!]!
-    created_at: String!
+    createdAt: DateTime!
 }
 
 type Query {
@@ -13,4 +15,5 @@ type Query {
 
 type Mutation {
     createPost(userId: ID!, content: String!): Post
+    deletePost(id: ID!): String!
 }

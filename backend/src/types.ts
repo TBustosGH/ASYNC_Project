@@ -11,7 +11,7 @@ export interface newUser {
 
 export interface typeUser extends newUser {
     id: Number;
-    created_at: String;
+    createdAt: String;
 };
 
 // Post
@@ -22,7 +22,7 @@ export interface newPost {
 
 export interface typePost extends newPost {
     id: Number;
-    created_at: String;
+    createdAt: String;
 };
 
 // Comment
