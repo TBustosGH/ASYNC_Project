@@ -17,6 +17,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare avatarUrl: String | null;
     declare bannerUrl: String | null;
     declare createdAt: CreationOptional<String>;
+    declare updatedAt: String | null;
     declare deletedAt: String | null;
 };
 
@@ -56,6 +57,11 @@ User.init({
         allowNull: false,
         defaultValue: DataTypes.NOW
     },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null
+    },
     deletedAt: {
         type: DataTypes.DATE,
         allowNull: true,
@@ -64,7 +70,7 @@ User.init({
 }, {
     sequelize,
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     modelName: "user"
 });
 

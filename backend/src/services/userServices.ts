@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import models from "../database/models/index.js";
-import type { newUser } from "../types.js";
+import type { newUser, typeUser } from "../types.js";
 import postServices from "./postServices.js";
 
 const getUsers = async (limit: number = 10, offset: number = 0) => {
@@ -48,19 +48,50 @@ const deleteUser = async (id: number) => {
     const [affectedCount] = await models.User.update(
         { deletedAt: Sequelize.fn("NOW") },
         {
-            where: { id: id, deletedAt: null }
+            where: { 
+                id: id, 
+                deletedAt: null 
+            }
         }
     );
 
     const deletedUserPosts = await postServices.deletePostsByUser(id);
 
     return affectedCount > 0 ? `user deleted succesfully and his posts (${deletedUserPosts}) were deleted` : "user not found";
-}
+};
+
+const updateUser = async (object: typeUser) => {
+    const userToUpdate = {...object};
+
+    await models.User.update(
+        {
+            username: userToUpdate.username,
+            email: userToUpdate.email,
+            name: userToUpdate.name,
+            passwordHash: userToUpdate.passwordHash,
+            description: userToUpdate.description,
+            avatarUrl: userToUpdate.avatarUrl,
+            bannerUrl: userToUpdate.bannerUrl,
+            updatedAt: Sequelize.fn("NOW")
+        },
+        {
+            where: { 
+                id: Number(userToUpdate.id), 
+                deletedAt: null 
+            }
+        }
+    );
+
+    const updatedUser = await getUser(Number(userToUpdate.id));
+
+    return updatedUser;
+};
 
 
 export default {
     getUsers,
     getUser,
     createUser,
-    deleteUser
+    deleteUser,
+    updateUser
 }

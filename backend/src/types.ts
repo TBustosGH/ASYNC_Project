@@ -31,3 +31,5 @@ export interface typePost extends newPost {
 // GraphQL Mutation's args
 export type createUserArgs = newUser;
 export type createPostArgs = newPost;
+export type updateUserArgs = typeUser;
+export type updatePostArgs = typePost;

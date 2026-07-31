@@ -13,10 +13,25 @@ type User {
 
 type Query {
     getAllUsers: [User!]!
-    getUser(id: ID!): User!
+    getUser(id: ID!): User
 }
 
 type Mutation {
-    createUser(username: String!, email: String!, passwordHash: String!, name: String): User 
+    createUser(
+        username: String!,
+        email: String!, 
+        passwordHash: String!, 
+        name: String
+    ): User 
     deleteUser(id: ID!): String!
+    updateUser(
+        id: ID!, 
+        username: String, 
+        email: String, 
+        passwordHash: String, 
+        name: String, 
+        description: String, 
+        avatarUrl: String, 
+        bannerUrl: String
+    ): User
 }

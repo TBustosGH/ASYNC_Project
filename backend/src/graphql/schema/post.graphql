@@ -10,10 +10,17 @@ type Post {
 
 type Query {
     getAllPosts: [Post!]!
-    getPost(id: ID!): Post!
+    getPost(id: ID!): Post
 }
 
 type Mutation {
-    createPost(userId: ID!, content: String!): Post
+    createPost(
+        userId: ID!, 
+        content: String!
+    ): Post
     deletePost(id: ID!): String!
+    updatePost(
+        id: ID!,
+        content: String!
+    ): Post
 }

@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize";
 import models from "../database/models/index.js";
-import type { newPost } from "../types.js";
+import type { newPost, typePost } from "../types.js";
 import userServices from "./userServices.js";
 
 const getAllPosts = async (limit: number = 12, offset: number = 0) => {
@@ -24,7 +24,6 @@ const getPost = async (id: number) => {
             id: id,
             deletedAt: null
         },
-        attributes: ["id", "content", "created_at"],
         include: [{ model: models.User }]
     });
 
@@ -76,10 +75,32 @@ const deletePostsByUser = async (id: number) => {
     return affectedCount;
 };
 
+const updatePost = async (object: typePost) => {
+    const postToUpdate = {...object};
+
+    await models.Post.update(
+        {
+            content: postToUpdate.content,
+            updatedAt: Sequelize.fn("NOW")
+        },
+        {
+            where: {
+                id: Number(postToUpdate.id),
+                deletedAt: null
+            }
+        }
+    );
+
+    const updatedPost = await getPost(Number(postToUpdate.id));
+
+    return updatedPost;
+};
+
 export default {
     getAllPosts,
     getPost,
     createPost,
     deletePost,
-    deletePostsByUser
+    deletePostsByUser,
+    updatePost
 }

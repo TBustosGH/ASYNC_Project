@@ -12,6 +12,7 @@ class Post extends Model<InferAttributes<Post>, InferCreationAttributes<Post>> {
     declare userId: Number;
     declare content: String;
     declare createdAt: CreationOptional<String>;
+    declare updatedAt: String | null;
     declare deletedAt: String | null;
 };
 
@@ -35,6 +36,11 @@ Post.init({
         allowNull: false,
         defaultValue: DataTypes.NOW
     },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null
+    },
     deletedAt: {
         type: DataTypes.DATE,
         allowNull: true,
@@ -43,7 +49,7 @@ Post.init({
 }, {
     sequelize,
     underscored: true,
-    timestamps: false,
+    timestamps: true,
     modelName: "post"
 });
 
