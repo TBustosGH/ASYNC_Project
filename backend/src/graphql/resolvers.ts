@@ -7,6 +7,7 @@ import postServices from "../services/postServices.js";
 import type { 
     newUser, 
     newPost, 
+    typePost,
     createUserArgs, 
     createPostArgs,
     updateUserArgs,
@@ -46,7 +47,7 @@ export const resolvers = {
         getPost: async(_parent: unknown, { id }: { id: string }) => {
             try {
                 if (!(id || isNaN(Number(id))) ) {
-                    throw new Error("invalid or inexistent id")
+                    throw new Error("invalid or inexistent id");
                 }
 
                 const post = await postServices.getPost(Number(id));
@@ -58,6 +59,23 @@ export const resolvers = {
                 }
                 console.log(errorMessage);
                 return null;   
+            }
+        },
+        getPostsByUser: async(_parent: unknown, { id }: { id: number }) => {
+            try {
+                if (!id || isNaN(Number(id)) ) {
+                    throw new Error("invalid or inexistent id");
+                }
+
+                const { count, rows }: { count: number, rows: Array<typePost> } = await postServices.getPostsByUser(Number(id));
+                return { count, rows };
+            } catch (error) {
+                let errorMessage = "Something went wrong while looking out for posts of a user: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
             }
         }
     },

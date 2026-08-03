@@ -26,7 +26,16 @@ export interface typePost extends newPost {
 };
 
 // Comment
+export interface newComment {
+    postId: Number;
+    userId: Number;
+    content: String;
+};
 
+export interface typeComment extends newComment {
+    id: Number;
+    createdAt: String;
+};
 
 // GraphQL Mutation's args
 export type createUserArgs = newUser;

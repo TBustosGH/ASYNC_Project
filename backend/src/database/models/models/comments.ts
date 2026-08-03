@@ -8,12 +8,13 @@ import {
 import sequelize from "../../server.js";
 
 class Comment extends Model<InferAttributes<Comment>, InferCreationAttributes<Comment>> {
-    declare id: CreationOptional<number>;
-    declare postId: number;
-    declare userId: number;
-    declare content: string;
-    declare createdAt: CreationOptional<string>;
-    declare deletedAt: string | null;
+    declare id: CreationOptional<Number>;
+    declare postId: Number;
+    declare userId: Number;
+    declare content: String;
+    declare createdAt: CreationOptional<String>;
+    declare updatedAt: String | null;
+    declare deletedAt: String | null;
 };
 
 Comment.init({
@@ -40,6 +41,11 @@ Comment.init({
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null
     },
     deletedAt: {
         type: DataTypes.DATE,

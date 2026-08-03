@@ -1,6 +1,9 @@
 import { Sequelize } from "sequelize";
 import models from "../database/models/index.js";
-import type { newPost, typePost } from "../types.js";
+import type { 
+    newPost, 
+    typePost 
+} from "../types.js";
 import userServices from "./userServices.js";
 
 const getAllPosts = async (limit: number = 12, offset: number = 0) => {
@@ -8,7 +11,6 @@ const getAllPosts = async (limit: number = 12, offset: number = 0) => {
         where: {
             deletedAt: null
         },
-        attributes: ["id", "content", "createdAt"],
         include: [{ model: models.User }],
         order: [["createdAt", "DESC"]],
         limit: limit,
@@ -19,7 +21,7 @@ const getAllPosts = async (limit: number = 12, offset: number = 0) => {
 };
 
 const getPost = async (id: number) => {
-    const foundPost = await models.Post.findOne({
+    const foundPost: typePost | null = await models.Post.findOne({
         where: {
             id: id,
             deletedAt: null
@@ -28,6 +30,23 @@ const getPost = async (id: number) => {
     });
 
     return foundPost;
+};
+
+const getPostsByUser = async (id: number) => {
+    const userAuthor = await userServices.getUser(Number(id));  // Checks if the id is owned by any existing user
+    if (!userAuthor) {
+        throw new Error("the specified ID does not correspond to any existing user");   //  throws an error if the id is not owned by any user
+    }
+
+    const { count, rows }: { count: number, rows: Array<typePost>} = await models.Post.findAndCountAll({
+        where: {
+            userId: id,
+            deletedAt: null
+        },
+        include: [{ model: models.User }]
+    });
+
+    return { count, rows };
 };
 
 const createPost = async (object: newPost) => {
@@ -42,7 +61,7 @@ const createPost = async (object: newPost) => {
         throw new Error("the specified ID does not correspond to any existing user");
     }
 
-    const newPost = await models.Post.create({
+    const newPost = await models.Post.create({  //  Creates and saves the new post in the DB
         userId: object.userId,
         content: object.content
     });
@@ -99,6 +118,7 @@ const updatePost = async (object: typePost) => {
 export default {
     getAllPosts,
     getPost,
+    getPostsByUser,
     createPost,
     deletePost,
     deletePostsByUser,

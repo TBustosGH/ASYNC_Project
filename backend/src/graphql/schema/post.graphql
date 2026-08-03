@@ -8,9 +8,15 @@ type Post {
     createdAt: DateTime!
 }
 
+type countedPostsResponse {
+    count: Int!
+    rows: [Post!]!
+}
+
 type Query {
-    getAllPosts: [Post!]!
+    getAllPosts: [Post]
     getPost(id: ID!): Post
+    getPostsByUser(id: ID!): countedPostsResponse
 }
 
 type Mutation {
