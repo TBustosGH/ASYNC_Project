@@ -9,7 +9,7 @@ Comment.init({
         primaryKey: true,
         autoIncrement: true
     },
-    parentId: {
+    postId: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: "posts", key: "id" }
@@ -28,6 +28,11 @@ Comment.init({
         allowNull: false,
         defaultValue: DataTypes.NOW
     },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true,
+        defaultValue: null
+    },
     deletedAt: {
         type: DataTypes.DATE,
         allowNull: true,
@@ -36,7 +41,7 @@ Comment.init({
 }, {
     sequelize,
     underscored: true,
-    timestamps: true,
+    timestamps: false,
     modelName: "comment"
 });
 export default Comment;

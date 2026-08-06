@@ -1,2 +1,2 @@
-export declare const typeDefs = "\n    type Query {\n        hi: String\n    }\n";
+export declare const typeDefs: import("graphql").DocumentNode;
 //# sourceMappingURL=typeDefs.d.ts.map

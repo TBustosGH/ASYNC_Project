@@ -10,7 +10,7 @@ Post.hasMany(Comment);
 Post.belongsTo(User);
 // Comment model relationships
 Comment.belongsTo(Post);
-Comment.belongsTo(Post);
+Comment.belongsTo(User);
 
 
 export default {

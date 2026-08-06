@@ -1,9 +1,12 @@
+// Sequelize
 import { Sequelize } from "sequelize";
 import models from "../database/models/index.js";
+// TS types
 import type { 
     newPost, 
     typePost 
 } from "../types.js";
+// Services
 import userServices from "./userServices.js";
 
 const getAllPosts = async (limit: number = 12, offset: number = 0) => {
@@ -26,7 +29,7 @@ const getPost = async (id: number) => {
             id: id,
             deletedAt: null
         },
-        include: [{ model: models.User }]
+        include: [{ model: models.User }, { model: models.Comment }]
     });
 
     return foundPost;

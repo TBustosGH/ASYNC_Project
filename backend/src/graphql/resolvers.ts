@@ -3,15 +3,20 @@ import { DateTimeResolver } from "graphql-scalars";
 // Services
 import userServices from "../services/userServices.js";
 import postServices from "../services/postServices.js";
+import commentServices from "../services/commentServices.js";
 // Types
 import type { 
     newUser, 
-    newPost, 
+    newPost,
+    newComment, 
     typePost,
     createUserArgs, 
     createPostArgs,
+    createCommentArgs,
     updateUserArgs,
-    updatePostArgs
+    updatePostArgs,
+    updateCommentArgs,
+    typeComment
 } from "../types.js";
 
 
@@ -77,6 +82,27 @@ export const resolvers = {
                 console.log(errorMessage);
                 return null;
             }
+        },
+        getComments: async(_parent: unknown, { parentId }: { parentId: number }) => {
+            try {
+                if (!parentId || isNaN(parentId)) {
+                    throw new Error("invalid or inexistent id");
+                }
+
+                const { count, rows }: { count: number, rows: Array<typeComment>} = await commentServices.getCommentsByPost(parentId);
+                return { count, rows };
+            } catch (error) {
+                let errorMessage = "Something went wrong while looking out for comments of a post: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(`\n\n 
+                    ======================================================
+                    ${errorMessage}
+                    ======================================================
+                \n\n`);
+                return null;
+            }
         }
     },
     Mutation: {
@@ -116,6 +142,25 @@ export const resolvers = {
                 return null;
             }
         },
+        createComment: async (_parent: unknown, args: createCommentArgs) => {
+            const body: newComment = {...args};
+
+            try {
+                if (!body) {
+                    throw new Error("No data found for creating a new comment");
+                }
+
+                const newComment = await commentServices.createComment(body);
+                return newComment;
+            } catch (error) {
+                let errorMessage = "Something went wrong trying to create a new comment: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
+            }
+        },
         deletePost: async (_parent: unknown, { id }: {id: string}) => {
             try {
                 if(!id) {
@@ -143,6 +188,22 @@ export const resolvers = {
                     errorMessage += error.message;
                 }
                 console.log(errorMessage);
+                return null;
+            }
+        },
+        deleteComment: async (_parent: unknown, { id }: { id: number }) => {
+            try {
+                if (!(id || isNaN(id))) {
+                    throw new Error("invalid or inexistent id for deleting comment");
+                }
+
+                return await commentServices.deleteComment(id);
+            } catch (error) {
+                let errorMessage = "Something went wrong trying yo delete comment: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log("errorMessage");
                 return null;
             }
         },
@@ -176,7 +237,7 @@ export const resolvers = {
                 console.log(errorMessage);
                 return null;
             }
-        }   ,
+        },
         updatePost: async (_parent: unknown, args: updatePostArgs) => {
             try {
                 const postToUpdate = await postServices.getPost(Number(args.id));
@@ -196,6 +257,33 @@ export const resolvers = {
                 return updatedPost;
             } catch (error) {
                 let errorMessage = "Something went wrong while trying to update a post: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
+            }
+        },
+        updateComment: async (_parent: unknown, args: updateCommentArgs) => {
+            try {
+                const commentToUpdate = await commentServices.getComment(Number(args.id));
+                if (!commentToUpdate) { // Throws an error if no comment is found
+                    throw new Error("Invalid ID");
+                }
+
+                const modifiedComment: updateCommentArgs = {
+                    id: commentToUpdate.id,
+                    postId: commentToUpdate.postId,
+                    userId: commentToUpdate.userId,
+                    content: args.content,
+                    createdAt: commentToUpdate.createdAt 
+                };
+
+                const updatedComment = await commentServices.updateComment(modifiedComment);
+                
+                return updatedComment;
+            } catch (error) {
+                let errorMessage = "Something went wrong trying to update a comment: ";
                 if (error instanceof Error) {
                     errorMessage += error.message;
                 }

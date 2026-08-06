@@ -1,0 +1,32 @@
+scalar DateTime
+
+type Post {
+    id: ID!
+    user: User!
+    content: String!
+    comments: [Comment!]!
+    createdAt: DateTime!
+}
+
+type countedPostsResponse {
+    count: Int!
+    rows: [Post!]!
+}
+
+type Query {
+    getAllPosts: [Post]
+    getPost(id: ID!): Post
+    getPostsByUser(id: ID!): countedPostsResponse
+}
+
+type Mutation {
+    createPost(
+        userId: ID!, 
+        content: String!
+    ): Post
+    deletePost(id: ID!): String!
+    updatePost(
+        id: ID!,
+        content: String!
+    ): Post
+}
