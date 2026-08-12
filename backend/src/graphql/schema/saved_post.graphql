@@ -1,0 +1,15 @@
+scalar DateTime
+
+type savedPost {
+    user: User!
+    post: Post!
+    createdAt: DateTime!
+}
+
+type Query {
+
+}
+
+type Mutation {
+    
+}

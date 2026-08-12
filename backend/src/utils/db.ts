@@ -7,6 +7,8 @@ const syncModels = async () => {
     await models.User.sync();
     await models.Post.sync();
     await models.Comment.sync();
+    await models.SavedPost.sync();
+    await models.Follower.sync();
 };
 
 export const connectToDB = async () => {

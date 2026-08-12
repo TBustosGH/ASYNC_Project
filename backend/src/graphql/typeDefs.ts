@@ -8,8 +8,6 @@ const graphQlDir: string = "./**/*.graphql";    // A string to specify where to 
 
 const typesArray = loadFilesSync(path.join(__dirname, graphQlDir)); // Get all .graphql files
 
-console.log(typesArray);
-
 export const typeDefs = mergeTypeDefs([
     ...typesArray,
     'scalar DateTime'

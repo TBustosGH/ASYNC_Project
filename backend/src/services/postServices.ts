@@ -19,9 +19,9 @@ const getAllPosts = async (limit: number = 12, offset: number = 0) => {
         limit: limit,
         offset: offset
     });
-
     return rows;
 };
+
 
 const getPost = async (id: number) => {
     const foundPost: typePost | null = await models.Post.findOne({

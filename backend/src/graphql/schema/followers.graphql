@@ -1,0 +1,15 @@
+scalar DateTime
+
+type follower {
+    follower: User!
+    following: User!
+    createdAt: DateTime!
+}
+
+type Query {
+
+}
+
+type Mutation {
+    
+}
