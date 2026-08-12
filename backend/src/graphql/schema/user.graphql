@@ -11,9 +11,16 @@ type User {
     createdAt: DateTime!
 }
 
+type countedFollowsResponse {
+    count: Int!
+    rows: [User!]!
+}
+
 type Query {
     getAllUsers: [User!]!
     getUser(id: ID!): User
+    getAllFollowers(userId: ID!): countedFollowsResponse
+    getAllFollowings(userId: ID!): countedFollowsResponse 
 }
 
 type Mutation {
@@ -34,4 +41,12 @@ type Mutation {
         avatarUrl: String, 
         bannerUrl: String
     ): User
+    addFollow(
+        followerId: ID!,
+        followingId: ID!
+    ): String!
+    deleteFollow(
+        followerId: ID!,
+        followingId: ID!
+    ): String!
 }

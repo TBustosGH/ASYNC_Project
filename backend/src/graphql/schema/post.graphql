@@ -17,6 +17,7 @@ type Query {
     getAllPosts: [Post]
     getPost(id: ID!): Post
     getPostsByUser(id: ID!): countedPostsResponse
+    getAllSavedPosts(id: ID!): countedPostsResponse
 }
 
 type Mutation {
@@ -29,4 +30,12 @@ type Mutation {
         id: ID!,
         content: String!
     ): Post
+    savePost(
+        userId: ID!,
+        postId: ID!
+    ): String!
+    unsavePost(
+        userId: ID!,
+        postId: ID!
+    ): String!
 }
