@@ -14,6 +14,13 @@ export interface typeUser extends newUser {
     createdAt: String;
 };
 
+export interface typeFollower {
+    followingId: Number;
+    followerId: Number;
+    createdAt: String;
+    updatedAt: String | null;
+};
+
 // Post
 export interface newPost {
     userId: Number;

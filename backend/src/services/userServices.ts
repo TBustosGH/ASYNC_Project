@@ -4,7 +4,8 @@ import models from "../database/models/index.js";
 // TS types
 import type { 
     newUser, 
-    typeUser 
+    typeUser,
+    typeFollower 
 } from "../types.js";
 // Services
 import postServices from "./postServices.js";
@@ -95,11 +96,113 @@ const updateUser = async (object: typeUser) => {
     return updatedUser;
 };
 
+const getAllFollowers = async (followingId: number, limit: number = 12, offset: number = 0) => {
+    if (!followingId || !isNaN(followingId)) {
+        throw new Error("invalid or unexistent user id");
+    }
+
+    const user = await getUser(followingId);
+    if (!user) {
+        throw new Error("id is not associated with any existent user");
+    }
+
+    const { count, rows }: { count: number, rows: Array<typeFollower> } = await models.Follower.findAndCountAll({
+        where: {
+            followingId: followingId,
+            deletedAt: null
+        },
+        include: [{ model: models.User }],
+        limit: limit,
+        offset: offset
+    });
+
+    return { count, rows };
+};
+
+const getAllFollowings = async (followerId: number, limit: number = 12, offset: number = 0) => {
+    if (!followerId || !isNaN(followerId)) {
+        throw new Error("invalid or unexistent user id");
+    }
+
+    const user = await getUser(followerId);
+    if (!user) {
+        throw new Error("id is not associated with any existent user");
+    }
+
+    const { count, rows }: { count: number, rows: Array<typeFollower>} = await models.Follower.findAndCountAll({
+        where: {
+            followerId: followerId,
+            deletedAt: null
+        },
+        attributes: [["followingId", "following"], "createdAt"],
+        include: [{ model: models.User }],
+        limit: limit,
+        offset: offset
+    });
+
+    return { count, rows };
+};
+
+const addFollow = async (followingId: number, followerId: number) => {
+    if (!followerId || !followingId || !isNaN(followerId) || !isNaN(followingId)) {
+        throw new Error("invalid or insuficient user ID's");
+    }
+
+    const follower = await getUser(followerId);
+    if (!follower) {
+        throw new Error("no follower id associated to a known user");
+    }
+
+    const following = await getUser(followingId);
+    if (!following) {
+        throw new Error("no following id associated to a known user");
+    }
+
+    await models.Follower.create({
+        followerId: followerId,
+        followingId: followingId
+    });
+
+    return "follow created successfully!";
+};
+
+const deleteFollow = async (followingId: number, followerId: number) => {
+    if (!followerId || !followingId || !isNaN(followerId) || !isNaN(followingId)) {
+        throw new Error("invalid or insuficient user ID's");
+    }
+
+    const follower = await getUser(followerId);
+    if (!follower) {
+        throw new Error("no follower id associated to a known user");
+    }
+
+    const following = await getUser(followingId);
+    if (!following) {
+        throw new Error("no following id associated to a known user");
+    }
+
+    const [affectedCount] = await models.Follower.update(
+        { deletedAt: Sequelize.fn("NOW") },
+        {
+            where: {
+                followerId: followerId,
+                followingId: followingId,
+                deletedAt: null
+            }
+        }
+    );
+
+    return affectedCount > 0 ? "unfollow" : "can't find follow"
+};
 
 export default {
     getUsers,
     getUser,
     createUser,
     deleteUser,
-    updateUser
+    updateUser,
+    getAllFollowers,
+    getAllFollowings,
+    addFollow,
+    deleteFollow
 }
