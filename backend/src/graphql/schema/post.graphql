@@ -4,7 +4,6 @@ type Post {
     id: ID!
     user: User!
     content: String!
-    comments: [Comment]!
     createdAt: DateTime!
 }
 
