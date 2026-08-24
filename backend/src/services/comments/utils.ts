@@ -1,13 +1,13 @@
 import { Sequelize } from "sequelize";
-import models from "../database/models/index.js";
+import models from "../../database/models/index.js";
 import type {
     newComment,
     typeComment
-} from "../types.js";
-import userServices from "./userServices.js";
-import postServices from "./postServices.js";
+} from "../../types.js";
+import userServices from "../users/userServices.js";
+import postServices from "../posts/postServices.js";
 
-const getComment = async (id: number) => {
+export const getComment = async (id: number) => {
     const comment: typeComment | null = await models.Comment.findOne({
         where: {
             id: id,
@@ -21,7 +21,7 @@ const getComment = async (id: number) => {
     return comment;
 };
 
-const getCommentsByPost = async (postId: number) => {
+export const getCommentsByPost = async (postId: number) => {
     const parentPost = await postServices.getPost(postId);
     if (!parentPost) {
         throw new Error("the specified ID does not correspond to any existing post");
@@ -38,7 +38,7 @@ const getCommentsByPost = async (postId: number) => {
     return { count, rows };
 };
 
-const createComment = async (object: newComment) => {
+export const createComment = async (object: newComment) => {
     if (!object) {
         throw new Error("insuficient or invalid data to create a new comment");
     }
@@ -65,7 +65,7 @@ const createComment = async (object: newComment) => {
     return newComment;
 };
 
-const updateComment = async (object: typeComment) => {
+export const updateComment = async (object: typeComment) => {
     const commentToUpdate = {...object};
 
     await models.Comment.update(
@@ -86,7 +86,7 @@ const updateComment = async (object: typeComment) => {
     return updatedComment;
 };
 
-const deleteComment = async (id: number) => {
+export const deleteComment = async (id: number) => {
     const [affectedCount] = await models.Comment.update(
         { deletedAt: Sequelize.fn("NOW") },
         {
@@ -97,7 +97,7 @@ const deleteComment = async (id: number) => {
     return affectedCount > 0 ? "comment deleted succesfully" : "comment not found";
 };
 
-const deleteCommentsByUser = async (userId: number) => {
+export const deleteCommentsByUser = async (userId: number) => {
     const [affectedCount] = await models.Comment.update(
         { deletedAt: Sequelize.fn("NOW") },
         {
@@ -111,7 +111,7 @@ const deleteCommentsByUser = async (userId: number) => {
     return affectedCount;
 };
 
-const deleteCommentsByPost = async (postId: number) => {
+export const deleteCommentsByPost = async (postId: number) => {
     const [affectedCount] = await models.Comment.update(
         { deletedAt: Sequelize.fn("NOW") },
         {
@@ -123,14 +123,4 @@ const deleteCommentsByPost = async (postId: number) => {
     );
 
     return affectedCount;
-};
-
-export default {
-    getComment,
-    getCommentsByPost,
-    createComment,
-    updateComment,
-    deleteComment,
-    deleteCommentsByUser,
-    deleteCommentsByPost
 };

@@ -1,17 +1,17 @@
 // Sequelize
 import { Sequelize } from "sequelize";
-import models from "../database/models/index.js";
+import models from "../../database/models/index.js";
 // TS types
 import type { 
     newUser, 
     typeUser,
     typeFollower 
-} from "../types.js";
+} from "../../types.js";
 // Services
-import postServices from "./postServices.js";
-import commentServices from "./commentServices.js";
+import postServices from "./../posts/postServices.js";
+import commentServices from "./../comments/commentServices.js";
 
-const getUsers = async (limit: number = 10, offset: number = 0) => {
+export const getUsers = async (limit: number = 10, offset: number = 0) => {
     const users = await models.User.findAll({
         where: {
             deletedAt: null
@@ -24,7 +24,7 @@ const getUsers = async (limit: number = 10, offset: number = 0) => {
 };
 
 
-const getUser = async (id: number) => {
+export const getUser = async (id: number) => {
     const foundUser = await models.User.findOne({
         where: {
             id: id,
@@ -34,7 +34,7 @@ const getUser = async (id: number) => {
     return foundUser;
 };
 
-const createUser = async (object: newUser) => {
+export const createUser = async (object: newUser) => {
     if (!object) {
         throw new Error("insuficient or invalid data while creating a new user");
     }
@@ -52,7 +52,7 @@ const createUser = async (object: newUser) => {
     return newUser;
 };
 
-const deleteUser = async (id: number) => {
+export const deleteUser = async (id: number) => {
     const [affectedCount] = await models.User.update(
         { deletedAt: Sequelize.fn("NOW") },
         {
@@ -69,7 +69,7 @@ const deleteUser = async (id: number) => {
     return affectedCount > 0 ? `user deleted succesfully and his posts (${deletedUserPosts}) & comments (${deletedUserComments}) were deleted` : "user not found";
 };
 
-const updateUser = async (object: typeUser) => {
+export const updateUser = async (object: typeUser) => {
     const userToUpdate = {...object};
 
     await models.User.update(
@@ -96,7 +96,7 @@ const updateUser = async (object: typeUser) => {
     return updatedUser;
 };
 
-const getAllFollowers = async (followingId: number, limit: number = 12, offset: number = 0) => {
+export const getAllFollowers = async (followingId: number, limit: number = 12, offset: number = 0) => {
     if (!followingId || !isNaN(followingId)) {
         throw new Error("invalid or unexistent user id");
     }
@@ -119,7 +119,7 @@ const getAllFollowers = async (followingId: number, limit: number = 12, offset: 
     return { count, rows };
 };
 
-const getAllFollowings = async (followerId: number, limit: number = 12, offset: number = 0) => {
+export const getAllFollowings = async (followerId: number, limit: number = 12, offset: number = 0) => {
     if (!followerId || !isNaN(followerId)) {
         throw new Error("invalid or unexistent user id");
     }
@@ -143,7 +143,7 @@ const getAllFollowings = async (followerId: number, limit: number = 12, offset: 
     return { count, rows };
 };
 
-const addFollow = async (followingId: number, followerId: number) => {
+export const addFollow = async (followingId: number, followerId: number) => {
     if (!followerId || !followingId || !isNaN(followerId) || !isNaN(followingId)) {
         throw new Error("invalid or insuficient user ID's");
     }
@@ -166,7 +166,7 @@ const addFollow = async (followingId: number, followerId: number) => {
     return "follow created successfully!";
 };
 
-const deleteFollow = async (followingId: number, followerId: number) => {
+export const deleteFollow = async (followingId: number, followerId: number) => {
     if (!followerId || !followingId || !isNaN(followerId) || !isNaN(followingId)) {
         throw new Error("invalid or insuficient user ID's");
     }
@@ -194,15 +194,3 @@ const deleteFollow = async (followingId: number, followerId: number) => {
 
     return affectedCount > 0 ? "unfollow" : "can't find follow"
 };
-
-export default {
-    getUsers,
-    getUser,
-    createUser,
-    deleteUser,
-    updateUser,
-    getAllFollowers,
-    getAllFollowings,
-    addFollow,
-    deleteFollow
-}

@@ -1,9 +1,9 @@
 // GraphQL
 import { DateTimeResolver } from "graphql-scalars";
 // Services
-import userServices from "../services/userServices.js";
-import postServices from "../services/postServices.js";
-import commentServices from "../services/commentServices.js";
+import userServices from "../services/users/userServices.js";
+import postServices from "../services/posts/postServices.js";
+import commentServices from "../services/comments/commentServices.js";
 // Types
 import type { 
     newUser, 
