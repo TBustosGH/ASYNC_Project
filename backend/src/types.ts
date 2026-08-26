@@ -51,3 +51,13 @@ export type createCommentArgs = newComment;
 export type updateUserArgs = typeUser;
 export type updatePostArgs = typePost;
 export type updateCommentArgs = typeComment;
+export interface addFollowArgs {
+    followerId: number;
+    followingId: number;
+};
+export type deleteFollowArgs = addFollowArgs;
+export interface savePostArgs {
+    userId: number;
+    postId: number;
+};
+export type unsavePostArgs = savePostArgs;

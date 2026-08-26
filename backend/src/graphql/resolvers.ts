@@ -10,13 +10,17 @@ import type {
     newPost,
     newComment, 
     typePost,
+    typeComment,
     createUserArgs, 
     createPostArgs,
     createCommentArgs,
     updateUserArgs,
     updatePostArgs,
     updateCommentArgs,
-    typeComment
+    addFollowArgs,
+    deleteFollowArgs,
+    savePostArgs,
+    unsavePostArgs
 } from "../types.js";
 
 
@@ -103,6 +107,15 @@ export const resolvers = {
                 \n\n`);
                 return null;
             }
+        },
+        getAllFollowers: async (_parent: unknown, { userId }: { userId: number}) => {
+
+        },
+        getAllFollowings: async (_parent: unknown, { userId }: { userId: number }) => {
+
+        },
+        getAllSavedPosts: async (_parent: unknown, { id }: { id: number }) => {
+
         }
     },
     Mutation: {
@@ -290,6 +303,18 @@ export const resolvers = {
                 console.log(errorMessage);
                 return null;
             }
+        },
+        addFollow: async (_parent: unknown, args: addFollowArgs) => {
+
+        },
+        deleteFollow: async (_parent: unknown, args: deleteFollowArgs) => {
+
+        },
+        savePost: async (_parent: unknown, args: savePostArgs) => {
+
+        },
+        unsavePost: async (_parent: unknown, args: unsavePostArgs) => {
+
         }
     }
 };
