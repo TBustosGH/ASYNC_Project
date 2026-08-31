@@ -109,10 +109,34 @@ export const resolvers = {
             }
         },
         getAllFollowers: async (_parent: unknown, { userId }: { userId: number}) => {
+            try {
+                // Get the number of follower and the followers data
+                const { count, rows } = await userServices.getAllFollowers(userId);
 
+                return { count, rows };
+            } catch (error) {
+                let errorMessage = "Something went wrong: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
+            }
         },
         getAllFollowings: async (_parent: unknown, { userId }: { userId: number }) => {
+            try {
+                // Get the number of followed users and the followed users data
+                const { count, rows } = await userServices.getAllFollowings(userId);
 
+                return { count, rows };
+            } catch (error) {
+                let errorMessage = "Something went wrong: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
+            }
         },
         getAllSavedPosts: async (_parent: unknown, { id }: { id: number }) => {
 
@@ -304,11 +328,29 @@ export const resolvers = {
                 return null;
             }
         },
-        addFollow: async (_parent: unknown, args: addFollowArgs) => {
-
+        addFollow: async (_parent: unknown, { followerId, followingId }: addFollowArgs) => {
+            try {
+                // Add the new follow
+                return await userServices.addFollow(followingId, followerId);
+            } catch (error) {
+                let errorMessage = "Something went wrong: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                return errorMessage;
+            }
         },
-        deleteFollow: async (_parent: unknown, args: deleteFollowArgs) => {
-
+        deleteFollow: async (_parent: unknown, { followerId, followingId }: deleteFollowArgs) => {
+            try {
+                // Delete follow
+                return await userServices.deleteFollow(followingId, followerId);
+            } catch (error) {
+                let errorMessage = "Something went wrong: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                return errorMessage;
+            }
         },
         savePost: async (_parent: unknown, args: savePostArgs) => {
 

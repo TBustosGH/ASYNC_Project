@@ -97,7 +97,7 @@ export const updateUser = async (object: typeUser) => {
 };
 
 export const getAllFollowers = async (followingId: number, limit: number = 12, offset: number = 0) => {
-    if (!followingId || !isNaN(followingId)) {
+    if (!followingId || isNaN(followingId)) {
         throw new Error("invalid or unexistent user id");
     }
 
@@ -111,7 +111,11 @@ export const getAllFollowers = async (followingId: number, limit: number = 12, o
             followingId: followingId,
             deletedAt: null
         },
-        include: [{ model: models.User }],
+        attributes: ["createdAt"],
+        include: [
+            { model: models.User, as: "follower" },
+            { model: models.User, as: "following" }
+        ],
         limit: limit,
         offset: offset
     });
@@ -120,7 +124,8 @@ export const getAllFollowers = async (followingId: number, limit: number = 12, o
 };
 
 export const getAllFollowings = async (followerId: number, limit: number = 12, offset: number = 0) => {
-    if (!followerId || !isNaN(followerId)) {
+    console.log(followerId);
+    if (!followerId || isNaN(followerId)) {
         throw new Error("invalid or unexistent user id");
     }
 
@@ -134,30 +139,40 @@ export const getAllFollowings = async (followerId: number, limit: number = 12, o
             followerId: followerId,
             deletedAt: null
         },
-        attributes: [["followingId", "following"], "createdAt"],
-        include: [{ model: models.User }],
+        attributes: ["createdAt"],
+        include: [
+            { model: models.User, as: "follower" },
+            { model: models.User, as: "following" }
+        ],
         limit: limit,
         offset: offset
     });
+
+    console.log("COUNT: ", count);
+    console.log("ROWS: ", JSON.parse(JSON.stringify(rows)))
 
     return { count, rows };
 };
 
 export const addFollow = async (followingId: number, followerId: number) => {
-    if (!followerId || !followingId || !isNaN(followerId) || !isNaN(followingId)) {
+    // Check if theres followerId or following, and if theyre valid numbers
+    if (!followerId || !followingId || isNaN(followerId) || isNaN(followingId)) {
         throw new Error("invalid or insuficient user ID's");
+    } else if (followerId === followingId) {    // Check that ID are not duplicated
+        throw new Error("duplicate keys are not allowed. A user cannot follow itself");
     }
 
+    // Check if followerId is valid
     const follower = await getUser(followerId);
     if (!follower) {
         throw new Error("no follower id associated to a known user");
     }
-
+    // Check if followingId is valid
     const following = await getUser(followingId);
     if (!following) {
         throw new Error("no following id associated to a known user");
     }
-
+    // Add the new follow
     await models.Follower.create({
         followerId: followerId,
         followingId: followingId
@@ -167,20 +182,12 @@ export const addFollow = async (followingId: number, followerId: number) => {
 };
 
 export const deleteFollow = async (followingId: number, followerId: number) => {
-    if (!followerId || !followingId || !isNaN(followerId) || !isNaN(followingId)) {
+    // Check if theres followerId or following, and if theyre valid numbers
+    if (!followerId || !followingId || isNaN(followerId) || isNaN(followingId)) {
         throw new Error("invalid or insuficient user ID's");
     }
 
-    const follower = await getUser(followerId);
-    if (!follower) {
-        throw new Error("no follower id associated to a known user");
-    }
-
-    const following = await getUser(followingId);
-    if (!following) {
-        throw new Error("no following id associated to a known user");
-    }
-
+    //delete follow
     const [affectedCount] = await models.Follower.update(
         { deletedAt: Sequelize.fn("NOW") },
         {

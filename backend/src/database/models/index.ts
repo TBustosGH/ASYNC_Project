@@ -19,7 +19,8 @@ Comment.belongsTo(User);
 SavedPost.belongsTo(User);
 SavedPost.belongsTo(Post)
 // Follower model relationships
-Follower.belongsTo(User);
+Follower.belongsTo(User, { as: "follower", foreignKey: "followerId" });
+Follower.belongsTo(User, { as: "following", foreignKey: "followingId" });
 
 export default {
     User,

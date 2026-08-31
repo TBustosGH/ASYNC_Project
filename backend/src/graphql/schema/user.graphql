@@ -11,16 +11,22 @@ type User {
     createdAt: DateTime!
 }
 
+type row {
+    createdAt: String
+    follower: User!
+    following: User!
+}
+
 type countedFollowsResponse {
-    count: Int!
-    rows: [User!]!
+    count: Int
+    rows: [row]
 }
 
 type Query {
     getAllUsers: [User!]!
     getUser(id: ID!): User
-    getAllFollowers(userId: ID!): countedFollowsResponse
-    getAllFollowings(userId: ID!): countedFollowsResponse 
+    getAllFollowers(userId: ID!): countedFollowsResponse 
+    getAllFollowings(userId: ID!): countedFollowsResponse
 }
 
 type Mutation {
