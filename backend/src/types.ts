@@ -32,6 +32,12 @@ export interface typePost extends newPost {
     createdAt: String;
 };
 
+export interface typeSavedPost {
+    postId: Number;
+    userId: Number;
+    createdAt: String;
+};
+
 // Comment
 export interface newComment {
     postId: Number;

@@ -7,16 +7,26 @@ type Post {
     createdAt: DateTime!
 }
 
+type SavedPost {
+    savedPost: Post!
+    createdAt: DateTime!
+}
+
 type countedPostsResponse {
-    count: Int!
-    rows: [Post!]!
+    count: Int
+    rows: [Post]
+}
+
+type countedSavedPostsResponse {
+    count: Int
+    rows: [SavedPost]
 }
 
 type Query {
     getAllPosts: [Post]
     getPost(id: ID!): Post
     getPostsByUser(id: ID!): countedPostsResponse
-    getAllSavedPosts(id: ID!): countedPostsResponse
+    getAllSavedPosts(id: ID!): countedSavedPostsResponse
 }
 
 type Mutation {
@@ -32,9 +42,9 @@ type Mutation {
     savePost(
         userId: ID!,
         postId: ID!
-    ): String!
+    ): String
     unsavePost(
         userId: ID!,
         postId: ID!
-    ): String!
+    ): String
 }

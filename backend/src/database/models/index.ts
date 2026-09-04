@@ -16,8 +16,8 @@ Post.hasMany(Comment);
 Comment.belongsTo(Post);
 Comment.belongsTo(User);
 // SavedPost model relationships
-SavedPost.belongsTo(User);
-SavedPost.belongsTo(Post)
+SavedPost.belongsTo(User, { as: "savedBy", foreignKey: "userId" });
+SavedPost.belongsTo(Post, { as: "savedPost", foreignKey: "postId" });
 // Follower model relationships
 Follower.belongsTo(User, { as: "follower", foreignKey: "followerId" });
 Follower.belongsTo(User, { as: "following", foreignKey: "followingId" });

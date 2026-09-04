@@ -8,8 +8,9 @@ import commentServices from "../services/comments/commentServices.js";
 import type { 
     newUser, 
     newPost,
-    newComment, 
+    newComment,
     typePost,
+    typeSavedPost,
     typeComment,
     createUserArgs, 
     createPostArgs,
@@ -139,7 +140,23 @@ export const resolvers = {
             }
         },
         getAllSavedPosts: async (_parent: unknown, { id }: { id: number }) => {
-
+            try {
+                // Check if the provided user ID is valid
+                const user = userServices.getUser(id);
+                if (!user) {
+                    throw new Error("The provided user ID is not associated with any existent user.");
+                }
+                // Get the posts and the amount of them saved by a user
+                const { count, rows }: { count: number, rows: Array<typeSavedPost> } = await postServices.getAllSavedPosts(Number(id));
+                return { count, rows };
+            } catch (error) {
+                let errorMessage = "Something went wrong while looking out for saved posts: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                console.log(errorMessage);
+                return null;
+            }
         }
     },
     Mutation: {
@@ -353,10 +370,35 @@ export const resolvers = {
             }
         },
         savePost: async (_parent: unknown, args: savePostArgs) => {
-
+            const { userId, postId } = args;
+            try {
+                // Save the post
+                return await postServices.savePost(userId, postId);
+            } catch (error) {
+                let errorMessage = "Something went wrong: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                return errorMessage;
+            }
         },
         unsavePost: async (_parent: unknown, args: unsavePostArgs) => {
+            const { userId, postId } = args;
 
+            // For testing only
+            console.log("User: ", userId);
+            console.log("Post: ", postId);
+
+            try {
+                // Unsave the post
+                return await postServices.unsavePost(userId, postId);
+            } catch (error) {
+                let errorMessage = "Something went wrong: ";
+                if (error instanceof Error) {
+                    errorMessage += error.message;
+                }
+                return errorMessage;
+            }
         }
     }
 };

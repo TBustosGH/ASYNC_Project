@@ -23,15 +23,22 @@ export const getUsers = async (limit: number = 10, offset: number = 0) => {
     return users;
 };
 
-
 export const getUser = async (id: number) => {
-    const foundUser = await models.User.findOne({
-        where: {
-            id: id,
-            deletedAt: null
+    try {
+        const foundUser = await models.User.findOne({
+            where: {
+                id: id,
+                deletedAt: null
+            }
+        });
+        return foundUser;
+    } catch (error) {
+        let errorMessage = "Something went wrong: ";
+        if (error instanceof Error) {
+            errorMessage += error.message;
         }
-    });
-    return foundUser;
+        return null;
+    }
 };
 
 export const createUser = async (object: newUser) => {
@@ -124,7 +131,7 @@ export const getAllFollowers = async (followingId: number, limit: number = 12, o
 };
 
 export const getAllFollowings = async (followerId: number, limit: number = 12, offset: number = 0) => {
-    console.log(followerId);
+
     if (!followerId || isNaN(followerId)) {
         throw new Error("invalid or unexistent user id");
     }
@@ -147,9 +154,6 @@ export const getAllFollowings = async (followerId: number, limit: number = 12, o
         limit: limit,
         offset: offset
     });
-
-    console.log("COUNT: ", count);
-    console.log("ROWS: ", JSON.parse(JSON.stringify(rows)))
 
     return { count, rows };
 };

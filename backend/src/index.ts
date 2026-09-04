@@ -24,9 +24,9 @@ interface props {
 startStandaloneServer(server, {
     listen: { port: APP_PORT }
 }).then(({ url }: props) => {
-    console.log(`Server ready at ${url}`);
     try {
         connectToDB();
+        console.log(`Server ready at ${url}`);
     } catch (error) {
         let errorMessage = 'Something went wrong: ';
         if (error instanceof Error) {

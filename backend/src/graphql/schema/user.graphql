@@ -11,15 +11,15 @@ type User {
     createdAt: DateTime!
 }
 
-type row {
-    createdAt: String
+type Follow {
+    createdAt: DateTime!
     follower: User!
     following: User!
 }
 
 type countedFollowsResponse {
     count: Int
-    rows: [row]
+    rows: [Follow]
 }
 
 type Query {

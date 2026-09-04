@@ -5,7 +5,10 @@ import {
     createPost,
     deletePost,
     deletePostsByUser,
-    updatePost
+    updatePost,
+    getAllSavedPosts,
+    savePost,
+    unsavePost
 } from "./utils.js";
 
 export default {
@@ -15,5 +18,8 @@ export default {
     createPost,
     deletePost,
     deletePostsByUser,
-    updatePost
+    updatePost,
+    getAllSavedPosts,
+    savePost,
+    unsavePost
 };
