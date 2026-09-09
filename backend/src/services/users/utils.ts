@@ -176,6 +176,12 @@ export const addFollow = async (followingId: number, followerId: number) => {
     if (!following) {
         throw new Error("no following id associated to a known user");
     }
+    // Check if the following relation is already created
+    const row = await getSpecificFollow(followerId, followingId);
+    if (row.length > 0) {
+        throw Error("A user cannot follow the same account twice.");
+    }
+
     // Add the new follow
     await models.Follower.create({
         followerId: followerId,
@@ -183,6 +189,22 @@ export const addFollow = async (followingId: number, followerId: number) => {
     });
 
     return "follow created successfully!";
+};
+
+export const getSpecificFollow = async (followerId: number, followingId: number) => {
+    const row = await models.Follower.findAll({
+        where: {
+            followerId: followerId,
+            followingId: followingId,
+            deletedAt: null
+        },
+        include: [
+            {   model: models.User, as: "follower"  },
+            {   model: models.User, as: "following" }
+        ]
+    });
+
+    return row;
 };
 
 export const deleteFollow = async (followingId: number, followerId: number) => {

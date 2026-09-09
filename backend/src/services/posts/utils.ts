@@ -9,6 +9,7 @@ import type {
 } from "../../types.js";
 // Services
 import userServices from "../users/userServices.js";
+import Post from "../../database/models/models/posts.js";
 
 export const getAllPosts = async (limit: number = 12, offset: number = 0) => {
     const rows = await models.Post.findAll({
@@ -131,6 +132,12 @@ export const savePost = async (userId: number, postId: number) => {
         throw new Error("Post ID is not associated with any existent post.");
     }
 
+    // Check if the post is already saved
+    const row = await getSavedPost(userId, postId);
+    if (row.length > 0) {
+        throw new Error("Post is already saved.");
+    }
+
     // Once IDs are checked
     // Save post
     await models.SavedPost.create({
@@ -150,6 +157,28 @@ export const unsavePost = async (userId: number, postId: number) => {
     );
 
     return affectedCount > 0 ? "post unsaved succesfully" : "no saved post found";
+};
+
+export const getSavedPost = async (userId: number, postId: number) => {
+    const row = await models.SavedPost.findAll({
+        where: {
+            userId: userId,
+            postId: postId,
+            deletedAt: null
+        },
+        include: [
+            {
+                model: models.Post,
+                as: "savedPost",
+                include: [{
+                    model: models.User
+                }]
+            },
+            {   model: models.User, as: "savedBy"   }
+        ]
+    });
+
+    return row;
 };
 
 export const getAllSavedPosts = async (userId: number, limit: number = 12, offset: number = 0) => {
