@@ -12,7 +12,7 @@
     "migration:status": "tsx src/database/migrator.ts status"
   },
   "keywords": [],
-  "author": "",
+  "author": "TBustos",
   "license": "ISC",
   "type": "module",
   "dependencies": {

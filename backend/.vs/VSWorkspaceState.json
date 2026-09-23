@@ -2,10 +2,8 @@
   "ExpandedNodes": [
     "",
     "\\src",
-    "\\src\\database\\models\\models",
     "\\src\\services",
     "\\src\\services\\users"
   ],
-  "SelectedNode": "\\src\\services\\users\\utils.ts",
   "PreviewInSolutionExplorer": false
 }
