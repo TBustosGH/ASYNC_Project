@@ -17,6 +17,31 @@ const server = new ApolloServer({
 });
 
 
+const startServer = async () => {
+    try {
+        // Start GraphQL ApolloServer
+        const { url } = await startStandaloneServer(server, {
+            listen: { port: APP_PORT }
+        });
+        // Connect to postgreSQL server
+        await connectToDB();
+        // Message to the console
+        console.log("\n====================================================================================\n");
+        console.log(`Server ready at ${url}`);
+        console.log("\n====================================================================================\n");
+    } catch (error) {
+        let errorMessage = 'Something went wrong: ';
+        if (error instanceof Error) {
+            errorMessage += error.message;
+        }
+        console.log(errorMessage);
+    }
+};
+
+startServer();
+
+// Legacy code to start the GraphQL ApolloServer
+/*
 interface props {
     url: string;
 };
@@ -41,3 +66,4 @@ startStandaloneServer(server, {
     }
     console.log(errorMessage);
 });
+*/

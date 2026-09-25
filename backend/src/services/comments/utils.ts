@@ -32,7 +32,13 @@ export const getCommentsByPost = async (postId: number) => {
             postId: postId,
             deletedAt: null
         },
-        include: [{ model: models.Post }, { model: models.User }]
+        include: [
+            { 
+                model: models.Post,
+                include: [{ model: models.User }]
+            },
+            { model: models.User }
+        ]
     });
 
     return { count, rows };

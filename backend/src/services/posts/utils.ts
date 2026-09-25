@@ -9,7 +9,6 @@ import type {
 } from "../../types.js";
 // Services
 import userServices from "../users/userServices.js";
-import Post from "../../database/models/models/posts.js";
 
 export const getAllPosts = async (limit: number = 12, offset: number = 0) => {
     const rows = await models.Post.findAll({
