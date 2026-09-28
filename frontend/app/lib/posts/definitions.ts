@@ -10,23 +10,22 @@ const GET_POSTS = gql`
                 id
                 username
                 avatarUrl
+                email
             }
         }
     }
 `;
 
-export type PostsData = {
-    getAllPosts: Array<{
+export type PostsData = Array<{
+    id: Number;
+    content: String;
+    createdAt: String;
+    user: {
         id: Number;
-        content: String;
-        createdAt: String;
-        user: {
-            id: Number;
-            username: String;
-            avatarUrl: String;
-        }
-    }> | null;
-};
+        username: String;
+        avatarUrl: String;
+    }
+}> | null;
 
 // Will return a specific post (getPost query) with its comments (getComments query)
 const GET_POST = gql`

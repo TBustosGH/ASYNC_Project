@@ -19,18 +19,29 @@ type PostProps = {
 const Post = (props: PostProps) => {
     const { post } = props; 
 
+    const uploadedAt = post.createdAt.replaceAll('-', '/').split('T');
+    const dateUploadedAt = uploadedAt[0];
+    const timeUploadedAt = uploadedAt[1].split('.');
+
     return (
-        <div>
-            <div>
-                <UserCircleIcon />
-                <p>{post.user.username}</p>
+        <div className="block bg-gray-950 rounded m-8 p-10 text-indigo-100">
+            <div className="flex justify-left">
+                {/* This Icon Is Used For Testing, Must Be Replaced When Images Are Supported */}
+                <UserCircleIcon className="w-16"/>  
+                <div className="flex">
+                    <p className="text-xl font-extrabold">{post.user.username}</p>
+                    {post.user.email
+                        ? <p className="text-gray-600">{`@${post.user.email}`}</p>
+                        : null
+                    }
+                </div>
             </div>
             <div>
-                <div>
-                    <p>{post.content}</p>
+                <div className="justify-left block mb-8 ml-2 mr-2 mt-5 md:ml-15">
+                    <p className="text-xl">{post.content}</p>
                 </div>
-                <div>
-                    <p>{post.createdAt}</p>
+                <div className="jusity-end">
+                    <p>{`${timeUploadedAt[0]} ${dateUploadedAt}`}</p>
                 </div>
             </div>
         </div>
@@ -39,7 +50,7 @@ const Post = (props: PostProps) => {
 
 const Posts = async () => {
     const posts: PostsData = await getPosts();
-    console.log(posts);
+
     if (!posts) {
         return (
             <main>
@@ -51,7 +62,7 @@ const Posts = async () => {
     return (
         <main> 
             {posts.map(postObject => 
-                <Post key={postObject} post={postObject} />
+                <Post key={Number(postObject.id)} post={postObject} />
             )}
         </main>
     );
