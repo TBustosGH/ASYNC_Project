@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import './ui/globals.css';
+import { ApolloClientProvider } from './lib/graphql/ApolloClientProvider';
 
 export const metadata: Metadata = {
     title: {
@@ -15,7 +16,11 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body> {children} </body>
+            <body> 
+                <ApolloClientProvider>
+                    {children}
+                </ApolloClientProvider>
+            </body>
         </html>
     );
 }

@@ -1,7 +1,9 @@
-export default function Page() {
+import Posts from "@/app/ui/home/Posts";
+
+export default async function Page() {
     return (
         <div>
-            <p>Home page!</p>
+            <Posts />
         </div>
     );
 };
