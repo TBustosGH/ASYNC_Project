@@ -1,4 +1,4 @@
-export interface fetchedUser {
+export interface typeUser {
     id: Number;
     username: String;
     email?: String | null;
@@ -12,9 +12,16 @@ export interface fetchedUser {
 
 
 // Post
-export interface fetchedPost {
+export interface typePost {
     id: Number;
     content: String;
     createdAt: String;
-    user: fetchedUser; 
+    user: typeUser;
+};
+
+export interface typeComment {
+    id: Number;
+    content: String;
+    createdAt: String;
+    user: typeUser;
 };

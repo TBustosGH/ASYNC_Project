@@ -1,5 +1,5 @@
 import type {
-    fetchedPost
+    typePost
 } from "@/app/lib/definitions";
 import type {
     PostsData
@@ -7,13 +7,15 @@ import type {
 import {
     getPosts
 } from "@/app/lib/posts/utils";
+import Link from "next/link";
 import Image from "next/image";
 import { 
     UserCircleIcon
 } from "@heroicons/react/24/outline";
+import ErrorComponent from "@/app/ui/ErrorComponent";
 
 type PostProps = {
-    post: fetchedPost;
+    post: typePost;
 };
 
 const Post = (props: PostProps) => {
@@ -63,7 +65,9 @@ const Posts = async () => {
         return (
             <main> 
                 {posts.map(postObject => 
-                    <Post key={Number(postObject.id)} post={postObject} />
+                    <Link href={`/post/${postObject.id}`} key={Number(postObject.id)}>
+                        <Post key={Number(postObject.id)} post={postObject} />
+                    </Link>
                 )}
                 
                 <h3 className="font-extrabold ">*Seems like there's no more posts to be shown.</h3>
@@ -74,22 +78,10 @@ const Posts = async () => {
         if (error instanceof Error) {
             errorMessage = error.message;
         }
-
         return (
-            <main className="block bg-gray-950 text-indigo-100 rounded m-8 p-10">
-                <h2 className="text-xl font-extrabold">Cannot fetch posts from the server!</h2>
-                {errorMessage
-                    ? <p className="mb-8 ml-2 mr-2 mt-5 md:ml-15 text-xl">
-                        <strong>Error Message: </strong>
-                        {errorMessage}
-                    </p>
-                    : <p></p>
-                }
-            </main>
+            <ErrorComponent errorMessage={errorMessage} />
         )
     }
-
-    
 };
 
 export default Posts;

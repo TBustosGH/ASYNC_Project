@@ -1,5 +1,5 @@
 import { query } from "../graphql/ApolloClient";
-import definitions from "./definitions";
+import definitions, { type PostData } from "./definitions";
 
 
 export const getPosts = async () => {
@@ -18,7 +18,7 @@ export const getPosts = async () => {
     }
 };
 
-export const getPost = async (postId: Number) => {
+export const getOnePost = async (postId: Number) => {
     try {
         if (!postId) {
             throw new Error("Cannot fetch a post if not postId is given.");
@@ -36,7 +36,7 @@ export const getPost = async (postId: Number) => {
             throw new Error(error.message);
         }
 
-        const { getPost, getComments } = data;
+        const { getPost, getComments }: PostData = data;
 
         return { getPost, getComments };
     } catch (error) {

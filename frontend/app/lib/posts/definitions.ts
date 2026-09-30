@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+// Will return all available post using getAllPosts query from the backend, I should add a limit and an offset later
+//TODO: Add limit and offset parameter, to limit the amount of posts this request should return
 const GET_POSTS = gql`
     query GetPosts {
         getAllPosts {
@@ -41,6 +43,7 @@ const GET_POST = gql`
                 id
                 username
                 avatarUrl
+                email
             }
         }
         
@@ -54,6 +57,7 @@ const GET_POST = gql`
                     id
                     username
                     avatarUrl
+                    email
                 }
             }
         }
@@ -69,11 +73,12 @@ export type PostData = {
             id: Number;
             username: String;
             avatarUrl: String;
+            email: String;
         } 
-    } | null;
-    getComment: {
+    };
+    getComments: {
         count: Number;
-        rows: {
+        rows: Array<{
             id: Number;
             content: String;
             createdAt: String;
@@ -81,9 +86,10 @@ export type PostData = {
                 id: Number;
                 username: String;
                 avatarUrl: String;
+                email: String;
             }
-        }
-    } | null;
+        }>;
+    };
 };
 
 export default {
