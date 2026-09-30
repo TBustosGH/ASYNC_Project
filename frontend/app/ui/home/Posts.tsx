@@ -49,23 +49,47 @@ const Post = (props: PostProps) => {
 };
 
 const Posts = async () => {
-    const posts: PostsData = await getPosts();
+    try {
+        const posts: PostsData = await getPosts();
 
-    if (!posts) {
+        if (!posts) {
+            return (
+                <main>
+                    <h3>No posts found!</h3>
+                </main>
+            );
+        }
+
         return (
-            <main>
-                <h3>No posts found!</h3>
+            <main> 
+                {posts.map(postObject => 
+                    <Post key={Number(postObject.id)} post={postObject} />
+                )}
+                
+                <h3 className="font-extrabold ">*Seems like there's no more posts to be shown.</h3>
             </main>
         );
+    } catch (error) {
+        let errorMessage: String | null = null;
+        if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+
+        return (
+            <main className="block bg-gray-950 text-indigo-100 rounded m-8 p-10">
+                <h2 className="text-xl font-extrabold">Cannot fetch posts from the server!</h2>
+                {errorMessage
+                    ? <p className="mb-8 ml-2 mr-2 mt-5 md:ml-15 text-xl">
+                        <strong>Error Message: </strong>
+                        {errorMessage}
+                    </p>
+                    : <p></p>
+                }
+            </main>
+        )
     }
 
-    return (
-        <main> 
-            {posts.map(postObject => 
-                <Post key={Number(postObject.id)} post={postObject} />
-            )}
-        </main>
-    );
+    
 };
 
 export default Posts;
