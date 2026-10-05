@@ -25,7 +25,7 @@ export type PostsData = Array<{
     user: {
         id: Number;
         username: String;
-        avatarUrl: String;
+        avatarUrl?: String;
         email: String;
     };
 }> | null;
@@ -73,7 +73,7 @@ export type PostData = {
         user: {
             id: Number;
             username: String;
-            avatarUrl: String;
+            avatarUrl?: String;
             email: String;
         } 
     };
@@ -86,7 +86,7 @@ export type PostData = {
             user: {
                 id: Number;
                 username: String;
-                avatarUrl: String;
+                avatarUrl?: String;
                 email: String;
             }
         }>;

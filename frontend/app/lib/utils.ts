@@ -18,7 +18,7 @@ export const parseDateTime = (timestamp: String) => {
     const timeUploadedAt = uploadedAt[1].split('.')[0].slice(0, 5);
     const numberOfMonth = Number(dateUploadedAt.slice(5, 7)) - 1;
 
-    const finalDate = `${timeUploadedAt}hs - ${dateUploadedAt.slice(8)}, ${months.at(numberOfMonth)}. ${dateUploadedAt.slice(0, 4)}`;
+    const finalDate = `${timeUploadedAt}hs · ${months.at(numberOfMonth)}. ${dateUploadedAt.slice(8)}, ${dateUploadedAt.slice(0, 4)}`;
     
     return finalDate;
 };

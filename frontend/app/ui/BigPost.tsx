@@ -5,27 +5,36 @@ import type {
     PostData,
 } from "@/app/lib/posts/definitions";
 import type {
-    typePost,
     typeComment
 } from "@/app/lib/definitions";
 import {
-    ArrowLeftIcon,
-    UserCircleIcon
+    ArrowLeftIcon
 } from "@heroicons/react/24/outline"
 import ErrorComponent from "@/app/ui/ErrorComponent";
 import { Post } from "./home/Posts";
+import BackButton from "./BackButton";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 
 
 type CommentProps = {
-    comment: typeComment 
+    count: Number;
+    rows: Array<typeComment>; 
 };
 
-const Comment = ({ comment }: CommentProps) => {
+const Comments = ({ count, rows }: CommentProps) => {
     return (
-        <div>
-            <Post post={comment} />
+        <div className="bg-gray-900 rounded p-8 h-auto justify-center bg-scroll">
+            <h3 className="text-indigo-100 text-4xl ">Comments</h3>
+            {Number(count) > 0
+                ? rows.map(c =>
+                    <Post key={Number(c.id)} post={c} />
+                )
+                : <div className="bg-gray-900 rounded p-8 text-indigo-100 justify-center grid">
+                    <h3 className="text-xl font-extrabold">No comments yet!</h3>
+                    <p>Be the first to comment this post.</p>
+                </div>
+            }
         </div>
     );
 };
@@ -52,15 +61,15 @@ const BigPost = async (props: BigPostProps) => {
         // Post data
         const post = data.getPost;
         // Comments data
-        const comments = data.getComments;
+        const commentsData = data.getComments;
 
         return (
             <main>
                 {/* UPSIDE NAV */}
                 <div className="flex">
-                    <Link href="/home" >
+                    <BackButton fallbackUrl="/home">
                         <ArrowLeftIcon className="w-10 hover:text-white"/>
-                    </Link>
+                    </BackButton>
                     <h1 className="text-4xl">Post</h1>
                 </div>
 
@@ -68,18 +77,8 @@ const BigPost = async (props: BigPostProps) => {
                 <Post post={post} />
 
                 {/* COMMENTS VIEW */}
-                <div className="bg-gray-900 rounded p-8 h-auto justify-center bg-scroll">
-                    <h3 className="text-indigo-100 text-4xl ">Comments</h3>
-                    {Number(comments.count) > 0
-                        ? comments.rows.map(c =>
-                                <Comment key={Number(c.id)} comment={c}/>
-                        )
-                        : <div className="bg-gray-900 rounded p-8 text-indigo-100 justify-center grid">
-                            <h3 className="text-xl font-extrabold">No comments yet!</h3>
-                            <p>Be the first to comment this post.</p>
-                        </div>
-                    }
-                </div>
+                <Comments count={commentsData.count} rows={commentsData.rows} />
+
             </main>
         )
     } catch (error) {

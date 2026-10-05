@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import './ui/globals.css';
 import { ApolloClientProvider } from './lib/graphql/ApolloClientProvider';
+import NavigationTracker from './ui/NavigationTracker';
 
 export const metadata: Metadata = {
     title: {
@@ -17,6 +18,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body> 
+                <NavigationTracker />
                 <ApolloClientProvider>
                     {children}
                 </ApolloClientProvider>
