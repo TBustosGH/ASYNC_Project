@@ -1,3 +1,4 @@
+// User
 export interface typeUser {
     id: Number;
     username: String;
@@ -19,6 +20,7 @@ export interface typePost {
     user: typeUser;
 };
 
+// Comment
 export interface typeComment {
     id: Number;
     content: String;

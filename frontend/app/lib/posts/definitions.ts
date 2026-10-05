@@ -26,7 +26,8 @@ export type PostsData = Array<{
         id: Number;
         username: String;
         avatarUrl: String;
-    }
+        email: String;
+    };
 }> | null;
 
 // Will return a specific post (getPost query) with its comments (getComments query)

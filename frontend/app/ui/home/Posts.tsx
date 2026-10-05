@@ -13,17 +13,14 @@ import {
     UserCircleIcon
 } from "@heroicons/react/24/outline";
 import ErrorComponent from "@/app/ui/ErrorComponent";
+import { parseDateTime } from "@/app/lib/utils";
 
 type PostProps = {
     post: typePost;
 };
 
-const Post = (props: PostProps) => {
-    const { post } = props; 
-
-    const uploadedAt = post.createdAt.replaceAll('-', '/').split('T');
-    const dateUploadedAt = uploadedAt[0];
-    const timeUploadedAt = uploadedAt[1].split('.');
+export const Post = ({ post }: PostProps) => {
+    const uploadedDateTime = parseDateTime(post.createdAt);
 
     return (
         <div className="block bg-gray-950 rounded m-8 p-10 text-indigo-100">
@@ -43,7 +40,7 @@ const Post = (props: PostProps) => {
                     <p className="text-xl">{post.content}</p>
                 </div>
                 <div className="jusity-end">
-                    <p>{`${timeUploadedAt[0]} ${dateUploadedAt}`}</p>
+                    <p>{uploadedDateTime}</p>
                 </div>
             </div>
         </div>

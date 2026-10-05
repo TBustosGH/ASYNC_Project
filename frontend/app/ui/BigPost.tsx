@@ -9,54 +9,23 @@ import type {
     typeComment
 } from "@/app/lib/definitions";
 import {
+    ArrowLeftIcon,
     UserCircleIcon
 } from "@heroicons/react/24/outline"
 import ErrorComponent from "@/app/ui/ErrorComponent";
+import { Post } from "./home/Posts";
 import { notFound } from "next/navigation";
+import Link from "next/link";
 
-
-type PostProps = {
-    post: typePost
-};
-
-const Post = ({ post }: PostProps) => {
-    const postUploadedAt = post.createdAt.split('T');
-    const postDateUploadedAt = postUploadedAt[0].replaceAll('-', '/');
-    const postTimeUploadedAt = postUploadedAt[1].split('.')[0];
-
-    return (
-        <div className="block bg-gray-950 rounded m-8 p-10 text-indigo-100">
-            <div className="flex justify-left">
-                {/* This Icon Is Used For Testing, Must Be Replaced When Images Are Supported */}
-                <UserCircleIcon className="w-16"/>  
-                <div className="flex">
-                    <p className="text-xl font-extrabold">{post.user.username}</p>
-                    {post.user.email
-                        ? <p className="text-gray-600">{`@${post.user.email}`}</p>
-                        : null
-                    }
-                </div>
-            </div>
-            <div>
-                <div className="justify-left block mb-8 ml-2 mr-2 mt-5 md:ml-15">
-                    <p className="text-xl">{post.content}</p>
-                </div>
-                <div className="jusity-end">
-                    <p>{`${postTimeUploadedAt} ${postDateUploadedAt}`}</p>
-                </div>
-            </div>
-        </div>
-    );
-};
 
 type CommentProps = {
     comment: typeComment 
 };
 
-const Comment = () => {
+const Comment = ({ comment }: CommentProps) => {
     return (
         <div>
-            {/* TODO */}
+            <Post post={comment} />
         </div>
     );
 };
@@ -76,7 +45,6 @@ const BigPost = async (props: BigPostProps) => {
 
         const data: PostData | undefined = await getOnePost(Number(postId));
 
-        console.log("DATA: ", data);
         if (!data?.getPost) {
             notFound();
         }
@@ -88,18 +56,30 @@ const BigPost = async (props: BigPostProps) => {
 
         return (
             <main>
+                {/* UPSIDE NAV */}
+                <div className="flex">
+                    <Link href="/home" >
+                        <ArrowLeftIcon className="w-10 hover:text-white"/>
+                    </Link>
+                    <h1 className="text-4xl">Post</h1>
+                </div>
+
                 {/* POST VIEW */}
                 <Post post={post} />
+
                 {/* COMMENTS VIEW */}
-                {Number(comments.count) > 0
-                    ? comments.rows.map(comment =>
-                        <Comment />
-                    )
-                    : <div className="bg-gray-900 rounded p-8 text-indigo-100 justify-center grid">
-                        <h3 className="text-xl font-extrabold">No comments yet!</h3>
-                        <p>Be the first to comment this post.</p>
-                    </div>
-                }
+                <div className="bg-gray-900 rounded p-8 h-auto justify-center bg-scroll">
+                    <h3 className="text-indigo-100 text-4xl ">Comments</h3>
+                    {Number(comments.count) > 0
+                        ? comments.rows.map(c =>
+                                <Comment key={Number(c.id)} comment={c}/>
+                        )
+                        : <div className="bg-gray-900 rounded p-8 text-indigo-100 justify-center grid">
+                            <h3 className="text-xl font-extrabold">No comments yet!</h3>
+                            <p>Be the first to comment this post.</p>
+                        </div>
+                    }
+                </div>
             </main>
         )
     } catch (error) {

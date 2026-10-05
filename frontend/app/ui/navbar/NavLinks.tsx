@@ -28,7 +28,7 @@ const links = [
     },
     {
         name: 'History',
-        href: '/p',
+        href: '/p/',
         icon: HistoryIcon,
         selectedIcon: SelectedHistoryIcon
     }
