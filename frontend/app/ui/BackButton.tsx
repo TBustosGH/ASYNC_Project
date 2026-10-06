@@ -15,7 +15,7 @@ export default function BackButton({ children, fallbackUrl = '/home' }: BackButt
 
         if (sessionHistory.length > 1 ){
             sessionHistory.pop();
-            sessionHistory.setItem('app-history', JSON.stringify(sessionHistory));
+            sessionStorage.setItem('app-history', JSON.stringify(sessionHistory));
 
             router.back();
         } else {

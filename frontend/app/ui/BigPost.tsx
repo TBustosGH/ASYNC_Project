@@ -11,7 +11,7 @@ import {
     ArrowLeftIcon
 } from "@heroicons/react/24/outline"
 import ErrorComponent from "@/app/ui/ErrorComponent";
-import { Post } from "./home/Posts";
+import Post from "@/app/ui/Post";
 import BackButton from "./BackButton";
 import { notFound } from "next/navigation";
 import Link from "next/link";

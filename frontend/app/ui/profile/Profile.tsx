@@ -24,7 +24,7 @@ export default async function Profile({ id }: ProfileProps) {
         }
 
         const data: UserData | undefined = await getUserData(Number(id));
-
+        
         if (!data?.getUser) {
             notFound();
         }
@@ -48,6 +48,18 @@ export default async function Profile({ id }: ProfileProps) {
             </main>
         );
     } catch (error) {
-
+        let errorMessage: String | null = null;
+        if (error instanceof Error) {
+            // Throw a 404 error
+            if (error.message.includes('404')) {
+                notFound();
+            }
+            // Manage regular errors
+            errorMessage = error.message;
+        }
+        // Display an error message to the user
+        return (
+            <ErrorComponent errorMessage={errorMessage} />
+        );
     }
 };
