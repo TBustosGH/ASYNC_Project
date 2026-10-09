@@ -32,31 +32,35 @@ const GET_USER = gql`
     }
 `;
 
-export type UserData = {
-    getUser: {
+export interface UserData {
+    id: Number;
+    username: String;
+    email: String;
+    name?: String;
+    description?: String;
+    avartarUrl?: String;
+    bannerUrl?: String;
+    createdAt: String;
+};
+
+export interface UsersPostsData {
+    count: Number;
+    rows: Array<{
         id: Number;
-        username: String;
-        email: String;
-        name?: String;
-        description?: String;
-        avartarUrl?: String;
-        bannerUrl?: String;
+        content: String;
         createdAt: String;
-    };
-    getPostsByUser: {
-        count: Number;
-        rows: Array<{
+        user: {
             id: Number;
-            content: String;
-            createdAt: String;
-            user: {
-                id: Number;
-                username: String;
-                avatarUrl?: String;
-                email: String;
-            }
-        }>;
-    }
+            username: String;
+            avatarUrl?: String;
+            email: String;
+        }
+    }>;
+};
+
+export type UserFullData = {
+    getUser: UserData;
+    getPostsByUser: UsersPostsData;
 };
 
 export default {

@@ -77,7 +77,7 @@ export const resolvers = {
                     throw new Error("invalid or inexistent id");
                 }
 
-                const { count, rows }: { count: number, rows: Array<typePost> } = await postServices.getPostsByUser(Number(id));
+                const { count, rows }: { count: number, rows: Array<typePost> } = await postServices.getPostsByUser(12, 0, Number(id));
                 return { count, rows };
             } catch (error) {
                 let errorMessage = "Something went wrong while looking out for posts of a user: ";
@@ -94,7 +94,7 @@ export const resolvers = {
                     throw new Error("invalid or inexistent id");
                 }
 
-                const { count, rows }: { count: number, rows: Array<typeComment>} = await commentServices.getCommentsByPost(parentId);
+                const { count, rows }: { count: number, rows: Array<typeComment>} = await commentServices.getCommentsByPost(12, 0, parentId);
                 return { count, rows };
             } catch (error) {
                 let errorMessage = "Something went wrong while looking out for comments of a post: ";

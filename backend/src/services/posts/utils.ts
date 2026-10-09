@@ -16,7 +16,7 @@ export const getAllPosts = async (limit: number = 12, offset: number = 0) => {
             deletedAt: null
         },
         include: [{ model: models.User }],
-        order: [["createdAt", "DESC"]],
+        order: [["id", "DESC"]],
         limit: limit,
         offset: offset
     });
@@ -35,7 +35,8 @@ export const getPost = async (id: number) => {
     return foundPost;
 };
 
-export const getPostsByUser = async (id: number) => {
+export const getPostsByUser = async (limit: number = 12, offset: number = 0, id: number) => {
+    console.log(id);
     const userAuthor = await userServices.getUser(Number(id));  // Checks if the id is owned by any existing user
     if (!userAuthor) {
         throw new Error("the specified ID does not correspond to any existing user");   //  throws an error if the id is not owned by any user
@@ -46,7 +47,10 @@ export const getPostsByUser = async (id: number) => {
             userId: id,
             deletedAt: null
         },
-        include: [{ model: models.User }]
+        include: [{ model: models.User }],
+        order: [["id", "DESC"]],
+        limit: limit,
+        offset: offset
     });
 
     return { count, rows };
@@ -158,6 +162,7 @@ export const unsavePost = async (userId: number, postId: number) => {
     return affectedCount > 0 ? "post unsaved succesfully" : "no saved post found";
 };
 
+// I think this is useless, I don't even know why I made this function
 export const getSavedPost = async (userId: number, postId: number) => {
     const row = await models.SavedPost.findAll({
         where: {
@@ -200,7 +205,7 @@ export const getAllSavedPosts = async (userId: number, limit: number = 12, offse
                 model: models.User
             }]
         }],
-        order: [["createdAt", "DESC"]],
+        order: [["id", "DESC"]],
         limit: limit,
         offset: offset,
     });

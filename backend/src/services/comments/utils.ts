@@ -15,13 +15,11 @@ export const getComment = async (id: number) => {
         },
         include: [{ model: models.Post}, { model: models.User }],
     });
-    
-    console.log("Comment: ", comment);
 
     return comment;
 };
 
-export const getCommentsByPost = async (postId: number) => {
+export const getCommentsByPost = async (limit: number = 12, offset: number = 0, postId: number) => {
     const parentPost = await postServices.getPost(postId);
     if (!parentPost) {
         throw new Error("the specified ID does not correspond to any existing post");
@@ -38,7 +36,10 @@ export const getCommentsByPost = async (postId: number) => {
                 include: [{ model: models.User }]
             },
             { model: models.User }
-        ]
+        ],
+        order: [["id", "DESC"]],
+        limit: limit,
+        offset: offset
     });
 
     return { count, rows };

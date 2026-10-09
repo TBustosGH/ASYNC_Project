@@ -2,16 +2,15 @@ import {
     getUserData
 } from "@/app/lib/users/utils";
 import type {
-    UserData
+    UserFullData
 } from "@/app/lib/users/definitions";
-import {
-    ArrowLeftIcon
-} from "@heroicons/react/24/outline";
 import ErrorComponent from "../ErrorComponent";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import BackButton from "../BackButton";
 
+
+import UpsideNav from "./UpsideNav";
+import UserHeader from "./UserHeader";
+import UserContent from "./UserContent";
 
 type ProfileProps = {
     id: number;
@@ -23,7 +22,7 @@ export default async function Profile({ id }: ProfileProps) {
             throw new Error("invalid or inexistent user's id.");
         }
 
-        const data: UserData | undefined = await getUserData(Number(id));
+        const data: UserFullData | undefined = await getUserData(Number(id));
         
         if (!data?.getUser) {
             notFound();
@@ -33,18 +32,13 @@ export default async function Profile({ id }: ProfileProps) {
         const posts = data.getPostsByUser;
 
         return (
-            <main>
+            <main className="p-0 m-0">
                 {/* UPSIDE NAV */}
-                <div className="flex">
-                    <BackButton fallbackUrl="/home">
-                        <ArrowLeftIcon className="w-10 hover:text-white" />
-                    </BackButton>
-                    <h1 className="text-4xl font-extrabold">{ user.username }</h1>
-                </div>
-
+                <UpsideNav username={user.username}/>
                 {/* PROFILE HEADER */}
-
+                <UserHeader data={user} />
                 {/* PROFILE CONTENT */}
+                <UserContent data={posts} />
             </main>
         );
     } catch (error) {
