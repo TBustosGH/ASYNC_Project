@@ -1,4 +1,3 @@
-import UpsideNav from "@/app/ui/profile/UpsideNav";
 import Profile from "@/app/ui/profile/Profile";
 
 export default async function Page(props: { params: Promise<{ id: number }>}) {

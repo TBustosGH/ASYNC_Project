@@ -18,23 +18,25 @@
   "dependencies": {
     "@apollo/server": "^5.5.1",
     "@graphql-tools/load-files": "^7.0.1",
-    "@graphql-tools/merge": "^9.2.2",
-    "dotenv": "^17.4.2",
+    "@graphql-tools/merge": "^9.2.7",
+    "dotenv": "^18.0.7",
+    "glob": "^13.0.6",
     "graphql": "^16.14.2",
-    "graphql-scalars": "^1.25.0",
-    "pg": "^8.22.0",
+    "graphql-scalars": "^2.0.0",
+    "pg": "^8.23.1",
     "sequelize": "^6.37.8",
-    "umzug": "^3.8.3"
+    "umzug": "^3.8.3",
+    "uuid": "^14.0.3"
   },
   "allowScripts": {
     "@apollo/protobufjs@1.2.8": true,
-    "esbuild@0.28.1": true,
-    "core-js@2.6.12": true
+    "core-js@2.6.12": true,
+    "esbuild@0.28.2": true
   },
   "devDependencies": {
-    "@types/node": "^26.1.2",
+    "@types/node": "^26.6.5",
     "cpx": "^1.5.0",
-    "tsx": "^4.23.9",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }
 }

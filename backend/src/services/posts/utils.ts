@@ -36,7 +36,6 @@ export const getPost = async (id: number) => {
 };
 
 export const getPostsByUser = async (limit: number = 12, offset: number = 0, id: number) => {
-    console.log(id);
     const userAuthor = await userServices.getUser(Number(id));  // Checks if the id is owned by any existing user
     if (!userAuthor) {
         throw new Error("the specified ID does not correspond to any existing user");   //  throws an error if the id is not owned by any user
