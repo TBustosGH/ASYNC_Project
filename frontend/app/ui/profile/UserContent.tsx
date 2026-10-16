@@ -8,7 +8,6 @@ interface UserContentProps {
 };
 
 export default function UserContent ({ data }: UserContentProps) {
-    console.log(data);
     return (
         <div className="bg-gray-900 p-16 border-t border-gray-500">
             <h2 className="text-indigo-100 font-extrabold text-3xl">Posts</h2>
