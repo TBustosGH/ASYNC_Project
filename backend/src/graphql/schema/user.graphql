@@ -4,6 +4,7 @@ type User {
     id: ID!
     username: String!
     email: String!
+    passwordHash: String!
     name: String
     description: String
     avatarUrl: String
@@ -25,6 +26,7 @@ type countedFollowsResponse {
 type Query {
     getAllUsers: [User!]!
     getUser(id: ID!): User
+    getUserForValidation(username: String, email: String, passwordHash: String): User
     getAllFollowers(userId: ID!): countedFollowsResponse 
     getAllFollowings(userId: ID!): countedFollowsResponse
 }

@@ -1,3 +1,18 @@
+import bcrypt from "bcryptjs";
+
+// Hash passwords
+export const saltAndHashPassword = async (password: string) => {
+    if (!password) {
+        throw new Error("no password to hash");
+    }
+
+    const saltRounds = 15;
+    const pwHash = await bcrypt.hash(password, saltRounds);
+
+    return pwHash;
+};
+
+// Parse timestamps
 const months = [
     "Jan",
     "Feb",

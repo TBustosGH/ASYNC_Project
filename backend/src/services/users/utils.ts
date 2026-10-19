@@ -41,6 +41,33 @@ export const getUser = async (id: number) => {
     }
 };
 
+export const getUserForValidation = async ({ username, email, passwordHash }: { username: string, email: string, passwordHash: string }) => {
+    console.log(username, email);
+    try {
+        if (!username && !email) {
+            throw new Error("No username or email specified");
+        }
+
+        const foundUser = await models.User.findOne({
+            attributes: ["id", "username", "email", "passwordHash"],
+            where: {
+                deletedAt: null,
+                username: username,
+                email: email,
+                passwordHash: passwordHash
+            }
+        });
+
+        return foundUser;
+    } catch (error) {
+        let errorMessage = "Something went wrong: ";
+        if (error instanceof Error) {
+            errorMessage += error.message;
+        }
+        return null; 
+    }
+};
+
 export const createUser = async (object: newUser) => {
     if (!object) {
         throw new Error("insuficient or invalid data while creating a new user");

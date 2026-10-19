@@ -1,6 +1,7 @@
 import {
     getUsers,
     getUser,
+    getUserForValidation,
     createUser,
     deleteUser,
     updateUser,
@@ -13,6 +14,7 @@ import {
 export default {
     getUsers,
     getUser,
+    getUserForValidation,
     createUser,
     deleteUser,
     updateUser,

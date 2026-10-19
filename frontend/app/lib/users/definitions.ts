@@ -63,6 +63,33 @@ export type UserFullData = {
     getPostsByUser: UsersPostsData;
 };
 
+const GET_USER_FOR_AUTHENTICATION = gql`
+    query getUserForAuthentication(
+        $userUsername: String!
+        $userEmail: String!
+        $passwordHash: String!
+    ) {
+        getUserForValidation(
+            username: $userUsername
+            email: $userEmail
+            passwordHash: $userPasswordHash
+        ) {
+            id
+            username
+            email
+            passwordHash
+        }
+    }
+`;
+
+export interface UserForAuthenticationData {
+    id: string;
+    username: string;
+    email: string;
+    passwordHash: string;
+};
+
 export default {
-    GET_USER
+    GET_USER,
+    GET_USER_FOR_AUTHENTICATION
 };
