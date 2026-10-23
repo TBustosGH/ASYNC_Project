@@ -7,6 +7,6 @@ export const signInSchema = z.object({
         .min(1, { error: "Username is required" }),
     password: z.string()
         .min(1, { error: "Password is required" })
-        .min(8, { error: "Password must be more than 8 characters" })
+        .min(3, { error: "Password must be more than 8 characters" })
         .max(32, { error: "Password must be less than 32 characters" })
 });

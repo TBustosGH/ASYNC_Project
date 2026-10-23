@@ -26,7 +26,7 @@ type countedFollowsResponse {
 type Query {
     getAllUsers: [User!]!
     getUser(id: ID!): User
-    getUserForValidation(username: String, email: String, passwordHash: String): User
+    getUserForValidation(email: String): User
     getAllFollowers(userId: ID!): countedFollowsResponse 
     getAllFollowings(userId: ID!): countedFollowsResponse
 }

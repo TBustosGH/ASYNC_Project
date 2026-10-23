@@ -1,4 +1,4 @@
-import { query } from "@/app/lib/graphql/ApolloClient";
+import { query, getClient } from "@/app/lib/graphql/ApolloClient";
 import definitions, { 
     type UserData,
     type UserForAuthenticationData
@@ -30,32 +30,3 @@ export const getUserData = async (userId: Number) => {
         }
     }
 };
-
-export const getUserForValidation = async (propUsername: string, propEmail: string, propPasswordHash: string) => {
-    try {
-        if (!propUsername || !propEmail) {
-            throw new Error("insuficient credentials given for fetching a user");
-        }
-
-        const { data, error } = await query({
-            query: definitions.GET_USER_FOR_AUTHENTICATION,
-            variables: {
-                userUsername: propUsername,
-                userEmail: propEmail,
-                userPasswordHash: propPasswordHash
-            }
-        });
-
-        if (error) {
-            throw new Error(error.message);
-        }
-
-        const { id, username, email, passwordHash }: UserForAuthenticationData = data;
-
-        return { username, email, passwordHash };
-    } catch (error) {
-        if (error instanceof Error) {
-            throw new Error(error.message);
-        }
-    }
-}

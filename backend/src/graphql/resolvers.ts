@@ -50,13 +50,13 @@ export const resolvers = {
                 return null;   
             }
         },
-        getUserForValidation: async (_parent: unknown, { username, email, passwordHash }: { username: string, email: string, passwordHash: string }) => {
+        getUserForValidation: async (_parent: unknown, { email}: { email: string }) => {
             try {
-                if (!username || !email || !passwordHash) {
+                if (!email) {
                     throw new Error("Insuficient credentaials specified. Cannot validate user");
                 }
 
-                const user = await userServices.getUserForValidation({ username, email, passwordHash });
+                const user = await userServices.getUserForValidation({ email });
                 return user;
             } catch (error) {
                 let errorMessage = "Something went wrong while looking out for an user: ";

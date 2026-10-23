@@ -65,14 +65,10 @@ export type UserFullData = {
 
 const GET_USER_FOR_AUTHENTICATION = gql`
     query getUserForAuthentication(
-        $userUsername: String!
         $userEmail: String!
-        $passwordHash: String!
     ) {
         getUserForValidation(
-            username: $userUsername
             email: $userEmail
-            passwordHash: $userPasswordHash
         ) {
             id
             username

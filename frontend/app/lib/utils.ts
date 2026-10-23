@@ -1,5 +1,9 @@
 import bcrypt from "bcryptjs";
 
+//  Passwords
+export const verifyPassword = async (pw: string, pwHash: string) => {
+    return await bcrypt.compare(pw, pwHash);
+};
 // Hash passwords
 export const saltAndHashPassword = async (password: string) => {
     if (!password) {
