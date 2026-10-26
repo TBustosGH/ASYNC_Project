@@ -77,6 +77,26 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
+    callbacks: {
+        //  Se ejecuta cuando el usuario inicia sesión o se actualiza el token
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+                token.email = user.email;
+                token.username = user.username;
+            }
+            return token;
+        },
+        //  Transfiere los datos del token a la sesión que usará la aplicación
+        async session({ session, token }) {
+            if (token && session.user) {
+                session.user.id = token.id as string;
+                session.user.email = token.email as string;
+                session.user.username = token.username as string;
+            }
+            return session;
+        }
+    },
     pages: {
         signIn: "/signIn",
     },
