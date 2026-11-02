@@ -3,8 +3,6 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { typeDefs } from "./graphql/typeDefs.js";
 import { resolvers } from "./graphql/resolvers.js";
-// Library
-import jwt from "jsonwebtoken";
 // Utils
 import { APP_PORT } from "./utils/config.js";
 import { connectToDB } from "./utils/db.js";

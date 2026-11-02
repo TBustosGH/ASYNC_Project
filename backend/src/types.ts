@@ -1,53 +1,53 @@
 // User
 export interface newUser {
-    username: String;
-    email: String;
-    name: String | null;
-    passwordHash: String;
-    description: String | null;
-    avatarUrl: String | null;
-    bannerUrl: String | null;
+    username: string;
+    email: string;
+    name: string | null;
+    passwordHash: string;
+    description: string | null;
+    avatarUrl: string | null;
+    bannerUrl: string | null;
 };
 
 export interface typeUser extends newUser {
-    id: Number;
-    createdAt: String;
+    id: number;
+    createdAt: string;
 };
 
 export interface typeFollower {
-    followingId: Number;
-    followerId: Number;
-    createdAt: String;
-    updatedAt: String | null;
+    followingId: number;
+    followerId: number;
+    createdAt: string;
+    updatedAt: string | null;
 };
 
 // Post
 export interface newPost {
-    userId: Number;
-    content: String;
+    userId: number;
+    content: string;
 };
 
 export interface typePost extends newPost {
-    id: Number;
-    createdAt: String;
+    id: number;
+    createdAt: string;
 };
 
 export interface typeSavedPost {
-    postId: Number;
-    userId: Number;
-    createdAt: String;
+    postId: number;
+    userId: number;
+    createdAt: string;
 };
 
 // Comment
 export interface newComment {
-    postId: Number;
-    userId: Number;
-    content: String;
+    postId: number;
+    userId: number;
+    content: string;
 };
 
 export interface typeComment extends newComment {
-    id: Number;
-    createdAt: String;
+    id: number;
+    createdAt: string;
 };
 
 // GraphQL Mutation's args

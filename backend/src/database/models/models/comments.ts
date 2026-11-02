@@ -8,13 +8,13 @@ import {
 import sequelize from "../../server.js";
 
 class Comment extends Model<InferAttributes<Comment>, InferCreationAttributes<Comment>> {
-    declare id: CreationOptional<Number>;
-    declare postId: Number;
-    declare userId: Number;
-    declare content: String;
-    declare createdAt: CreationOptional<String>;
-    declare updatedAt: String | null;
-    declare deletedAt: String | null;
+    declare id: CreationOptional<number>;
+    declare postId: number;
+    declare userId: number;
+    declare content: string;
+    declare createdAt: CreationOptional<string>;
+    declare updatedAt: string | null;
+    declare deletedAt: string | null;
 };
 
 Comment.init({

@@ -8,11 +8,11 @@ import {
 import sequelize from "../../server.js";
 
 class Follower extends Model<InferAttributes<Follower>, InferCreationAttributes<Follower>> {
-    declare followerId: Number;
-    declare followingId: Number;
-    declare createdAt: CreationOptional<String>;
-    declare updatedAt: String | null;
-    declare deletedAt: String | null;
+    declare followerId: number;
+    declare followingId: number;
+    declare createdAt: CreationOptional<string>;
+    declare updatedAt: string | null;
+    declare deletedAt: string | null;
 };  
 
 Follower.init({
