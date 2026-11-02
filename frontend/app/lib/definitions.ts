@@ -1,29 +1,29 @@
 // User
 export interface typeUser {
-    id: Number;
-    username: String;
-    email?: String | null;
-    passwordHash?: String;
-    description?: String;
-    name?: String;
-    avatarUrl?: String;
-    bannerUrl?: String;
-    createdAt?: String;
+    id: number;
+    username: string;
+    email?: string | null;
+    passwordHash?: string;
+    description?: string;
+    name?: string;
+    avatarUrl?: string;
+    bannerUrl?: string;
+    createdAt?: string;
 };
 
 
 // Post
 export interface typePost {
-    id: Number;
-    content: String;
-    createdAt: String;
+    id: number;
+    content: string;
+    createdAt: string;
     user: typeUser;
 };
 
 // Comment
 export interface typeComment {
-    id: Number;
-    content: String;
-    createdAt: String;
+    id: number;
+    content: string;
+    createdAt: string;
     user: typeUser;
 };

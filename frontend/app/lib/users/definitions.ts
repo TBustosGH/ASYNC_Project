@@ -33,27 +33,27 @@ const GET_USER = gql`
 `;
 
 export interface UserData {
-    id: Number;
-    username: String;
-    email: String;
-    name?: String;
-    description?: String;
-    avartarUrl?: String;
-    bannerUrl?: String;
-    createdAt: String;
+    id: number;
+    username: string;
+    email: string;
+    name?: string;
+    description?: string;
+    avartarUrl?: string;
+    bannerUrl?: string;
+    createdAt: string;
 };
 
 export interface UsersPostsData {
-    count: Number;
+    count: number;
     rows: Array<{
-        id: Number;
-        content: String;
-        createdAt: String;
+        id: number;
+        content: string;
+        createdAt: string;
         user: {
-            id: Number;
-            username: String;
-            avatarUrl?: String;
-            email: String;
+            id: number;
+            username: string;
+            avatarUrl?: string;
+            email: string;
         }
     }>;
 };
@@ -65,16 +65,10 @@ export type UserFullData = {
 
 const VALIDATE_USER_IN_BACKEND = gql`
     query validateUser(
-        $userEmail: String!
-        $userPassword: String!
+        $email: String!,
+        $password: String!
     ) {
-        getUserForValidation(
-            email: $userEmail
-            password: $userPassword
-        ) {
-            id
-            token
-        }
+        validateUser(email: $email, passwordHash: $password)
     }
 `;
 

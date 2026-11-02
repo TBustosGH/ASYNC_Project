@@ -32,7 +32,7 @@ const months = [
     "Dec"
 ];
 
-export const parseDateTime = (timestamp: String) => {
+export const parseDateTime = (timestamp: string) => {
     const uploadedAt = timestamp.split('T');
     const dateUploadedAt = uploadedAt[0].replaceAll('-', '/');
     const timeUploadedAt = uploadedAt[1].split('.')[0].slice(0, 5);
@@ -43,7 +43,7 @@ export const parseDateTime = (timestamp: String) => {
     return finalDate;
 };
 
-export const parseDate = (timestamp: String) => {
+export const parseDate = (timestamp: string) => {
     const uploadedAt = timestamp.split('T');
     const dateUploadedAt = uploadedAt[0].replaceAll('-', '/');
     const numberOfMonth = Number(dateUploadedAt.slice(5, 7)) - 1;

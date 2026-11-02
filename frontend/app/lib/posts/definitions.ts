@@ -19,14 +19,14 @@ const GET_POSTS = gql`
 `;
 
 export type PostsData = Array<{
-    id: Number;
-    content: String;
-    createdAt: String;
+    id: number;
+    content: string;
+    createdAt: string;
     user: {
-        id: Number;
-        username: String;
-        avatarUrl?: String;
-        email: String;
+        id: number;
+        username: string;
+        avatarUrl?: string;
+        email: string;
     };
 }> | null;
 
@@ -67,27 +67,27 @@ const GET_POST = gql`
 
 export type PostData = {
     getPost: {
-        id: Number;
-        content: String;
-        createdAt: String;
+        id: number;
+        content: string;
+        createdAt: string;
         user: {
-            id: Number;
-            username: String;
-            avatarUrl?: String;
-            email: String;
+            id: number;
+            username: string;
+            avatarUrl?: string;
+            email: string;
         } 
     };
     getComments: {
-        count: Number;
+        count: number;
         rows: Array<{
-            id: Number;
-            content: String;
-            createdAt: String;
+            id: number;
+            content: string;
+            createdAt: string;
             user: {
-                id: Number;
-                username: String;
-                avatarUrl?: String;
-                email: String;
+                id: number;
+                username: string;
+                avatarUrl?: string;
+                email: string;
             }
         }>;
     };
