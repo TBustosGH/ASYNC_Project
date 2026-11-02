@@ -41,17 +41,18 @@ export const getUser = async (id: number) => {
     }
 };
 
-export const getUserForValidation = async ({ email }: { email: string }) => {
+export const getUserForValidation = async ({ email, passwordHash }: { email: string, passwordHash: string }) => {
     try {
         if (!email) {
             throw new Error("No email specified");
         }
 
         const foundUser = await models.User.findOne({
-            attributes: ["id", "username", "email", "passwordHash"],
+            attributes: ["id", "username", "email"],
             where: {
                 deletedAt: null,
-                email: email
+                email: email,
+                passwordHash: passwordHash
             }
         });
 

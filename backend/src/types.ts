@@ -67,3 +67,11 @@ export interface savePostArgs {
     postId: number;
 };
 export type unsavePostArgs = savePostArgs;
+
+// GraphQL context
+export interface GraphQLContext {
+    user?: {
+        id: string;
+        token: string;
+    };
+};

@@ -12,6 +12,7 @@ declare module "next-auth" {
         user?: DefaultSession["user"] & {
             id: string;
             username?: string;
+            backendToken?: string;
         };
     }
 }
@@ -19,7 +20,9 @@ declare module "next-auth" {
 declare module "next-auth/jwt/types" {
     interface JWT {
         id?: string;
-        username?: string;
+        user?: DefaultSession["user"] & {
+            backendToken: string;
+        };
     }
 }
 

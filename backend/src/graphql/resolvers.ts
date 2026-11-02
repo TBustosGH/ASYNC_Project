@@ -24,7 +24,7 @@ import type {
     unsavePostArgs
 } from "../types.js";
 
-
+import jwt from "jsonwebtoken";
 
 export const resolvers = {
     DateTime: DateTimeResolver,
@@ -50,14 +50,24 @@ export const resolvers = {
                 return null;   
             }
         },
-        getUserForValidation: async (_parent: unknown, { email}: { email: string }) => {
+        validateUser: async (_parent: unknown, { email, passwordHash }: { email: string, passwordHash: string }) => {
             try {
-                if (!email) {
+                // Verify credentials
+                if (!email || !passwordHash) {
                     throw new Error("Insuficient credentaials specified. Cannot validate user");
                 }
 
-                const user = await userServices.getUserForValidation({ email });
-                return user;
+                // Fetch User
+                const user = await userServices.getUserForValidation({ email, passwordHash });
+                if (!user) throw new Error("Incorrect Credentials, cannot find any user.");
+
+                // Generate Token
+                const token = jwt.sign(user.dataValues, process.env.AUTH_SECRET!, {
+                    expiresIn: "14d"
+                });
+
+                // Return id & token
+                return token;
             } catch (error) {
                 let errorMessage = "Something went wrong while looking out for an user: ";
                 if (error instanceof Error) {

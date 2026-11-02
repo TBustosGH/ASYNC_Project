@@ -2,29 +2,31 @@ import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
 import { signInSchema } from "@/app/lib/zod";
-import { verifyPassword } from "@/app/lib/utils";
+import { saltAndHashPassword } from "@/app/lib/utils";
 
 // GraphQL
 import { getClient } from "./app/lib/graphql/ApolloClient";
 import definitions, { type UserForAuthenticationData } from "@/app/lib/users/definitions";
 
-const getUserForValidation = async (propEmail: string) => {
+const validateUser = async (propEmail: string, propPassword: string) => {
     try {
-        if (!propEmail) throw new Error();
+        if (!propEmail || !propPassword) throw new Error();
 
         const client = getClient();
         //  Fetch user from DB and throw error if not found
         const { data, error } = await client.query({
-            query: definitions.GET_USER_FOR_AUTHENTICATION,
+            query: definitions.VALIDATE_USER_IN_BACKEND,
             variables:  {
                 userEmail: propEmail,
+                userPassword: propPassword,
             },
         });
         if (error) throw new Error();
 
-        const { id, username, email, passwordHash }: UserForAuthenticationData = data?.getUserForValidation;
+        console.log("USER TOKEN: ", data?.VALIDATE_USER_IN_BACKEND)
+        const { id, token }: UserForAuthenticationData = data?.VALIDATE_USER_IN_BACKEND;
 
-        return { id, username, email, passwordHash };
+        return { id, token };
     } catch (error) {
         return null;
     }
@@ -34,6 +36,7 @@ const getUserForValidation = async (propEmail: string) => {
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
         Credentials({
+            name: "Credentials",
             credentials: {
                 username: {
                     type: "string",
@@ -52,24 +55,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     //  Throw error if no credentials
                     if (!credentials.email || !credentials.password || !credentials.username) throw new Error();
+                    console.log("CREDENTIALS: ", credentials);
 
                     //  Parse credentials
                     const { email, username, password } = await signInSchema.parseAsync(credentials);
 
-                    //  Fetch user from backend
-                    const user = await getUserForValidation(email);
+                    const pwHash = await saltAndHashPassword(password);
+                    //  Validate user in backend backend
+                    const user = await validateUser(email, pwHash);
                     if (!user) throw new Error();
-
-                    //  Validate user
-                    const isValid = await verifyPassword(password, user.passwordHash);
-                    if (!isValid) throw new Error();
-
+                    console.log(user);
                     //  Return user data
-                    return {
-                        id: user.id.toString(),
-                        email: user.email.toString(),
-                        username: user.username.toString()
-                    };
+                    return user;
                 } catch (error) {
                     console.log("Authorize error: ", error);
                     return null;
@@ -77,22 +74,27 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
         }),
     ],
+    session: {
+        strategy: "jwt",
+    },
     callbacks: {
         //  Se ejecuta cuando el usuario inicia sesión o se actualiza el token
         async jwt({ token, user }) {
+            console.log("USER?: ", user);
+            console.log("TOKEN?: ", token);
             if (user) {
-                token.id = user.id;
-                token.email = user.email;
-                token.username = user.username;
+                //token.id = user.id;
+                //token.user.backendToken = user.backendToken as string;
+                token.user.backendToken = user;
             }
+
             return token;
         },
         //  Transfiere los datos del token a la sesión que usará la aplicación
         async session({ session, token }) {
             if (token && session.user) {
                 session.user.id = token.id as string;
-                session.user.email = token.email as string;
-                session.user.username = token.username as string;
+                session.user.backendToken = token.backendToken as string;
             }
             return session;
         }
