@@ -50,6 +50,12 @@ export interface typeComment extends newComment {
     createdAt: string;
 };
 
+// GraphQL Queries' return data types
+export interface AuthPayload {
+    id: number;
+    backendToken: string;
+}
+
 // GraphQL Mutation's args
 export type createUserArgs = newUser;
 export type createPostArgs = newPost;

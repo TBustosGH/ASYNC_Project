@@ -23,10 +23,15 @@ type countedFollowsResponse {
     rows: [Follow]
 }
 
+type validateUserResponse {
+    id: String
+    backendToken: String
+}
+
 type Query {
     getAllUsers: [User!]!
     getUser(id: ID!): User
-    validateUser(email: String, passwordHash: String): String
+    validateUser(email: String, password: String): validateUserResponse
     getAllFollowers(userId: ID!): countedFollowsResponse 
     getAllFollowings(userId: ID!): countedFollowsResponse
 }

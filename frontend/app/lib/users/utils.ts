@@ -1,7 +1,6 @@
 import { query, getClient } from "@/app/lib/graphql/ApolloClient";
 import definitions, { 
-    type UserData,
-    type UserForAuthenticationData
+    type UserFullData
 } from "./definitions";
 
 export const getUserData = async (userId: Number) => {
@@ -21,7 +20,7 @@ export const getUserData = async (userId: Number) => {
             throw new Error(error.message);
         }
 
-        const { getUser, getPostsByUser }: UserData = data;
+        const { getUser, getPostsByUser }: UserFullData = data;
 
         return { getUser, getPostsByUser };
     } catch (error) {

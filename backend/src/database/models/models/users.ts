@@ -16,7 +16,7 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
     declare description: string | null;
     declare avatarUrl: string | null;
     declare bannerUrl: string | null;
-    declare createdAt: CreationOptional<String>;
+    declare createdAt: CreationOptional<string>;
     declare updatedAt: string | null;
     declare deletedAt: string | null;
 };

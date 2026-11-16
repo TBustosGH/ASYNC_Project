@@ -65,16 +65,19 @@ export type UserFullData = {
 
 const VALIDATE_USER_IN_BACKEND = gql`
     query validateUser(
-        $email: String!,
-        $password: String!
+        $email: String,
+        $password: String
     ) {
-        validateUser(email: $email, passwordHash: $password)
+        validateUser(email: $email, password: $password) {
+            id
+            backendToken
+        }
     }
 `;
 
 export interface UserForAuthenticationData {
     id: string;
-    token: string;
+    backendToken: string;
 };
 
 export default {

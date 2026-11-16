@@ -41,22 +41,21 @@ export const getUser = async (id: number) => {
     }
 };
 
-export const getUserForValidation = async ({ email, passwordHash }: { email: string, passwordHash: string }) => {
+export const getUserForValidation = async ({ email}: { email: string }) => {
     try {
         if (!email) {
             throw new Error("No email specified");
         }
 
         const foundUser = await models.User.findOne({
-            attributes: ["id", "username", "email"],
+            attributes: ["id", "username", "email", "passwordHash"],
             where: {
                 deletedAt: null,
-                email: email,
-                passwordHash: passwordHash
+                email: email
             }
         });
 
-        return foundUser;
+        return foundUser?.dataValues;
     } catch (error) {
         let errorMessage = "Something went wrong while trying to authenticate user: ";
         if (error instanceof Error) {

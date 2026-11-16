@@ -6,28 +6,35 @@ import { saltAndHashPassword } from "@/app/lib/utils";
 
 // GraphQL
 import { getClient } from "./app/lib/graphql/ApolloClient";
-import definitions, { type UserForAuthenticationData } from "@/app/lib/users/definitions";
+import definitions from "@/app/lib/users/definitions";
 
 const validateUser = async (propEmail: string, propPassword: string) => {
     try {
-        if (!propEmail || !propPassword) throw new Error();
+        if (!propEmail || !propPassword) throw new Error("Insuficient credentials");
 
         const client = getClient();
+
         //  Fetch user from DB and throw error if not found
         const { data, error } = await client.query({
             query: definitions.VALIDATE_USER_IN_BACKEND,
             variables:  {
-                userEmail: propEmail,
-                userPassword: propPassword,
+                email: propEmail,
+                password: propPassword,
             },
         });
-        if (error) throw new Error();
+        if (error) throw new Error(error.message);
 
-        console.log("USER TOKEN: ", data?.VALIDATE_USER_IN_BACKEND)
-        const { id, token }: UserForAuthenticationData = data?.VALIDATE_USER_IN_BACKEND;
+        const { id, backendToken } = data?.validateUser;
 
-        return { id, token };
+        return {
+            id,
+            backendToken
+        };
     } catch (error) {
+        let errorMessage: string = "Something went wrong: ";
+        if (error instanceof Error) errorMessage += error.message;
+        console.log(errorMessage);
+
         return null;
     }
 };
@@ -55,15 +62,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     //  Throw error if no credentials
                     if (!credentials.email || !credentials.password || !credentials.username) throw new Error();
-                    console.log("CREDENTIALS: ", credentials);
 
                     //  Parse credentials
                     const { email, username, password } = await signInSchema.parseAsync(credentials);
 
-                    const pwHash = await saltAndHashPassword(password);
                     //  Validate user in backend backend
-                    const user = await validateUser(email, pwHash);
-                    if (!user) throw new Error();
+                    const user = await validateUser(email, password);
+                    if (!user) throw new Error("Cannot find user");
                     console.log(user);
                     //  Return user data
                     return user;
@@ -80,12 +85,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     callbacks: {
         //  Se ejecuta cuando el usuario inicia sesión o se actualiza el token
         async jwt({ token, user }) {
-            console.log("USER?: ", user);
-            console.log("TOKEN?: ", token);
             if (user) {
-                //token.id = user.id;
-                //token.user.backendToken = user.backendToken as string;
-                token.user.backendToken = user;
+                token.id = user.id;
+                token.backendToken = user.backendToken;
             }
 
             return token;

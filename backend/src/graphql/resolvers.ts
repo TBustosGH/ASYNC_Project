@@ -12,6 +12,7 @@ import type {
     typePost,
     typeSavedPost,
     typeComment,
+    AuthPayload,
     createUserArgs, 
     createPostArgs,
     createCommentArgs,
@@ -25,6 +26,7 @@ import type {
 } from "../types.js";
 
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 
 export const resolvers = {
     DateTime: DateTimeResolver,
@@ -50,24 +52,30 @@ export const resolvers = {
                 return null;   
             }
         },
-        validateUser: async (_parent: unknown, { email, passwordHash }: { email: string, passwordHash: string }) => {
+        validateUser: async (_parent: unknown, { email, password }: { email: string, password: string }): Promise<AuthPayload | null> => {
             try {
                 // Verify credentials
-                if (!email || !passwordHash) {
+                if (!email || !password) {
                     throw new Error("Insuficient credentaials specified. Cannot validate user");
                 }
 
                 // Fetch User
-                const user = await userServices.getUserForValidation({ email, passwordHash });
+                const user = await userServices.getUserForValidation({ email });
                 if (!user) throw new Error("Incorrect Credentials, cannot find any user.");
+                // Validate Password
+                const isValid = await bcrypt.compare(password, user.passwordHash);
+                if (!isValid) throw new Error("Incorrect password");
 
                 // Generate Token
-                const token = jwt.sign(user.dataValues, process.env.AUTH_SECRET!, {
+                const token = jwt.sign(user, process.env.AUTH_SECRET!, {
                     expiresIn: "14d"
                 });
 
                 // Return id & token
-                return token;
+                return  {
+                    id: user.id,
+                    backendToken: token
+                };
             } catch (error) {
                 let errorMessage = "Something went wrong while looking out for an user: ";
                 if (error instanceof Error) {
