@@ -13,8 +13,7 @@ const httpLink = new HttpLink({
 
 const authLink = new SetContextLink(async (prevContext) => {
     const session = await auth();
-    const token = session?.user;
-    console.log("\n\nSESSION: ", token);
+    const token = session?.user?.backendToken;
     return {
         headers: {
             ...prevContext.headers,

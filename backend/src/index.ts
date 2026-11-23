@@ -24,13 +24,16 @@ const startServer = async () => {
         const { url } = await startStandaloneServer(server, {
             listen: { port: APP_PORT },
             context: async ({ req }) => {
-                const authHeader = req.headers.authorization || "";
-                const token = authHeader.replace("Bearer ", "");
-                console.log("\n\nAUTHHEADER: ", authHeader);
+                const authHeader = req.headers.authorization ?? "";
+                const token = authHeader.startsWith("Bearer ")
+                    ? authHeader.slice(7).trim()
+                    : authHeader.trim();
+                console.log("\n\nTOKEN: ", token);
+                /*
                 if (!token) {
                     return {};
                 }
-                /*
+                
                 try {
                     const decodedUser = jwt.verify(token, process.env.SECRET!) as any;
                     console.log("\n\nDECODEDUSER: ", decodedUser, "\n\n");

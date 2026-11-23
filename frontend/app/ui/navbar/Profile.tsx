@@ -11,7 +11,7 @@ export default async function Profile() {
     const userData = session?.user?.id
         ? await getUserData(Number(session?.user?.id))
         : null;
-    console.log("Profile", userData);
+
     return (
         <div>
             {/* LOGGED-IN VIEW */}
