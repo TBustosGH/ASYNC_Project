@@ -23,7 +23,7 @@ const Post = ({ post }: PostProps) => {
     return (
         <div 
             onClick={() => router.push(`/post/${post.id}`)}
-            className="block bg-gray-950 rounded m-8 p-10 text-indigo-100 hover:bg-gray-900 hover:border-gray-50 border border-transparent"
+            className="block max-w-3xl w-full  bg-gray-950 rounded m-8 p-10 text-indigo-100 hover:bg-gray-900 hover:border-gray-50 border border-transparent"
         >
             {/* POST HEADER */}
             <Link 

@@ -23,7 +23,9 @@ const Posts = async () => {
         }
 
         return (
-            <main> 
+            <main 
+                className="max-w-full min-w-fit h-full text-center justify-center"
+            > 
                 {posts.map(postObject => 
                     <Post key={Number(postObject.id)} post={postObject} />
                 )}

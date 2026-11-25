@@ -8,6 +8,9 @@ import { APP_PORT } from "./utils/config.js";
 import { connectToDB } from "./utils/db.js";
 import type { GraphQLContext } from "./types.js";
 
+import jwt from "jsonwebtoken";
+
+
 if (!APP_PORT) {
     throw new Error('No application port defined');
 }
@@ -24,27 +27,25 @@ const startServer = async () => {
         const { url } = await startStandaloneServer(server, {
             listen: { port: APP_PORT },
             context: async ({ req }) => {
+                // GET THE USER TOKEN FROM THE REQ HEADERS, AND DECODE IT
+
                 const authHeader = req.headers.authorization ?? "";
                 const token = authHeader.startsWith("Bearer ")
                     ? authHeader.slice(7).trim()
                     : authHeader.trim();
-                console.log("\n\nTOKEN: ", token);
-                /*
+                
                 if (!token) {
                     return {};
                 }
                 
                 try {
-                    const decodedUser = jwt.verify(token, process.env.SECRET!) as any;
-                    console.log("\n\nDECODEDUSER: ", decodedUser, "\n\n");
+                    const decodedUser = jwt.verify(token, process.env.AUTH_SECRET!) as any;
 
                     return { user: decodedUser };
                 } catch (error) {
                     console.log("\nError while trying to decode token: ", error);
                     return {};
                 }
-                */
-                return {};
             }
         });
         // Connect to postgreSQL server

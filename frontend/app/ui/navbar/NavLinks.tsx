@@ -3,12 +3,14 @@
 import {
     HomeIcon as HomeIcon,
     MagnifyingGlassIcon as SearchIcon,
-    BookmarkSquareIcon as HistoryIcon
+    BookmarkSquareIcon as HistoryIcon,
+    PencilSquareIcon as PostIcon
 } from '@heroicons/react/24/outline';
 import {
     HomeIcon as SelectedHomeIcon,
     MagnifyingGlassIcon as SelectedSearchIcon,
-    BookmarkSquareIcon as SelectedHistoryIcon
+    BookmarkSquareIcon as SelectedHistoryIcon,
+    PencilSquareIcon as SelectedPostIcon
 } from '@heroicons/react/24/solid'
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
