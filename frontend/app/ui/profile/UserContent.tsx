@@ -16,9 +16,11 @@ export default function UserContent ({ data }: UserContentProps) {
             ? <div>
                 <h3>This user hasn't post anything yet!</h3>
             </div>
-            : <div>
+            : <div
+                className="flex flex-col items-center justify-center"
+            >
                 {data.rows.map(p => 
-                    <Post key={Number(p.id)} post={p} />
+                    <Post key={Number(p.id)} post={p}/>
                 )}
             </div>
             }

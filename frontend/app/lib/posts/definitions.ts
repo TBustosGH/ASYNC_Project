@@ -93,7 +93,30 @@ export type PostData = {
     };
 };
 
+const CREATE_POST = gql`
+    mutation CreatePost(
+        $userId: ID!,
+        $content: String!
+    ) {
+        createPost(
+            userId: $userId,
+            content: $content
+        ) {
+            id
+            content
+        }
+    }
+`;
+
+export type CreatePostData = {
+    createPost: {
+        id: number;
+        content: string;
+    };
+};
+
 export default {
     GET_POSTS,
-    GET_POST
+    GET_POST,
+    CREATE_POST
 };

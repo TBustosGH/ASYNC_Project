@@ -1,6 +1,10 @@
-import { query } from "../graphql/ApolloClient";
-import definitions, { type PostData } from "./definitions";
+"use server";
 
+import { query } from "../graphql/ApolloClient";
+import { useMutation } from "@apollo/client/react";
+import definitions, { type PostData, CreatePostData } from "./definitions";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const getPosts = async () => {
     try {
@@ -44,4 +48,4 @@ export const getOnePost = async (postId: Number) => {
             throw new Error(error.message);
         }
     }
-}
+};

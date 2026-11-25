@@ -24,13 +24,13 @@ const Posts = async () => {
 
         return (
             <main 
-                className="max-w-full min-w-fit h-full text-center justify-center"
+                className="max-w-full min-w-fit h-full justify-center"
             > 
                 {posts.map(postObject => 
                     <Post key={Number(postObject.id)} post={postObject} />
                 )}
                 
-                <h3 className="font-extrabold ">*Seems like there's no more posts to be shown.</h3>
+                <h3 className="font-extrabold text-center">*Seems like there's no more posts to be shown.</h3>
             </main>
         );
     } catch (error) {
