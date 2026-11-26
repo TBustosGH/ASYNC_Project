@@ -1,3 +1,5 @@
+'use server';
+
 import {
     getOnePost
 } from "@/app/lib/posts/utils";
@@ -6,9 +8,11 @@ import type {
 } from "@/app/lib/posts/definitions";
 import ErrorComponent from "../ErrorComponent";
 import { notFound } from "next/navigation";
+import { auth } from "@/auth";
 
 import UpsideNav from "@/app/ui/post/UpsideNav";
 import SinglePost from "./SinglePost";
+import CommentForm from "./CommentForm";
 import Comments from "./Comments";
 
 type BigPostProps = {
@@ -16,6 +20,9 @@ type BigPostProps = {
 };
 
 export default async function BigPost({ postId }: BigPostProps) {
+    const session = await auth();
+    const userId = session?.user?.id;
+    
     try {
         if (!postId || isNaN(postId)) {
             throw new Error("invalid or inexistent post's id.");
@@ -41,6 +48,7 @@ export default async function BigPost({ postId }: BigPostProps) {
                 <SinglePost post={post} />
 
                 {/* COMMENTS VIEW */}
+                <CommentForm userId={userId} postId={postId} />
                 <Comments count={commentsData.count} rows={commentsData.rows} />
             </main>
         )

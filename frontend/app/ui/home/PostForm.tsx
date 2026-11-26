@@ -5,10 +5,7 @@ import { refreshPage } from "@/app/lib/actions";
 import { useMutation } from "@apollo/client/react";
 import definitions from "@/app/lib/posts/definitions";
 // Component
-import {
-    UserCircleIcon
-} from "@heroicons/react/24/outline";
-import Link from "next/link";
+import UserIcon from "../UserIcon";
 import { AutoResizeTextarea } from "../AutoResizeTextarea";
 
 
@@ -42,27 +39,14 @@ const PostForm = ({ userId }: { userId: string }) => {
     
     return (
         <div
-            className="flex flex-row w-full min-h-[55] flex bg-gray-950 rounded ml-4 p-8 text-indigo-100"
+            className="flex flex-row w-full min-h-[55] bg-gray-950 rounded ml-4 p-8 text-indigo-100"
         >   
 
-            {/* DISPLAYS THE USER'S PROFILE PICTURE, 
+            {/* 
+                DISPLAYS THE USER'S PROFILE PICTURE, 
                 AND REDIRECTS TO ITS ACCOUNT PAGE WHEN CLICKED
             */}
-            <div>
-                {userId && <Link 
-                    href={`/profile/${userId}`}
-                    onClick={(e) => e.stopPropagation()}
-                    className="flex w-fit h-fit"
-                >
-                    <UserCircleIcon className="w-16"/>
-                </Link>}
-
-                {!userId && <div
-                    className="flex w-fit h-fit"
-                >
-                    <UserCircleIcon className="w-16"/>
-                </div>}
-            </div>
+            <UserIcon userId={userId} />
 
             <form
                 onSubmit={handleSubmit}
@@ -76,7 +60,8 @@ const PostForm = ({ userId }: { userId: string }) => {
                         onChange={(e) => setContent(e.target.value)}
                         placeholder="What's going on?"
                         maxHeight={200}
-                        className="p-3 m-3 ml-auto mr-auto bg-transparent focus:outline-none rounded w-full h-fit font-normal"
+                        className="p-3 m-3 ml-auto mr-auto bg-transparent rounded w-full h-fit font-normal"
+                        name="post-content"
                         required
                     />
                 </label>
@@ -84,7 +69,7 @@ const PostForm = ({ userId }: { userId: string }) => {
                 <button
                     disabled={loading}
                     type="submit"
-                    className="hover:bg-gray-500 hover:rounded-lg hover:cursor-pointer w-fit p-1 text-white font-medium"
+                    className="hover:bg-gray-500 hover:rounded-lg hover:cursor-pointer h-fit w-fit p-1 mt-1 mb-1 mr-2 ml-auto text-white font-medium"
                 >
                     {loading ? "Saving..." : "Post"}
                 </button>
