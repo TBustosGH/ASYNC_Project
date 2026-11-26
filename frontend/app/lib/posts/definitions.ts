@@ -103,17 +103,10 @@ const CREATE_POST = gql`
             content: $content
         ) {
             id
-            content
         }
     }
 `;
 
-export type CreatePostData = {
-    createPost: {
-        id: number;
-        content: string;
-    };
-};
 
 export default {
     GET_POSTS,

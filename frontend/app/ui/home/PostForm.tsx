@@ -15,9 +15,7 @@ import { AutoResizeTextarea } from "../AutoResizeTextarea";
 const PostForm = ({ userId }: { userId: string }) => {
     const [content, setContent] = useState<string>("");
 
-    const [createPostMutation, { loading, error }] = useMutation(definitions.CREATE_POST, {
-        refetchQueries: ["getAllPosts"],
-    });
+    const [createPostMutation, { loading, error }] = useMutation(definitions.CREATE_POST);
 
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
@@ -27,10 +25,10 @@ const PostForm = ({ userId }: { userId: string }) => {
         try {
             if (!content) throw new Error("No content given for the new post");
 
-            const { data } = await createPostMutation({
+            await createPostMutation({
                 variables: { userId, content },
             });
-            console.log("NEW POST: ", data?.createPost);
+
         }catch (error) {
             if (error instanceof Error) {
                 throw new Error(error.message);

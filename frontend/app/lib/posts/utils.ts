@@ -1,10 +1,5 @@
-"use server";
-
 import { query } from "../graphql/ApolloClient";
-import { useMutation } from "@apollo/client/react";
-import definitions, { type PostData, CreatePostData } from "./definitions";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import definitions, { type PostData, } from "./definitions";
 
 export const getPosts = async () => {
     try {
